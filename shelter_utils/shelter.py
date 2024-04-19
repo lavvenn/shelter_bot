@@ -18,7 +18,7 @@ class Card:
                  action_card: str,
                  condition_card: str):
         
-        self.number = number
+        self.number = number + 1
         self.profession = profession
         self.bio_characteristics = bio_characteristics
         self.health = health
@@ -30,6 +30,10 @@ class Card:
         self.baggage = baggage
         self.action_card = action_card
         self.condition_card = condition_card
+
+
+    def __str__(self):
+        return f"номер карты: {self.number}\n"
 
 
     def get_all_characteristics(self):
