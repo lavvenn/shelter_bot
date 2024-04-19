@@ -8,7 +8,7 @@ router = Router()
 async def cmd_start(message):
     await message.answer(f"Hello, {message.from_user.full_name}!")
 
-@router.message(Command(commands=["help"]))
+@router.message(Command("help"))
 async def cmd_help(message):
     await message.answer(f"Hello, {message.from_user.full_name}!")
 
