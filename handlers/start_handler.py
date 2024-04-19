@@ -1,5 +1,9 @@
 from aiogram import Router, F
 from aiogram.filters.command import Command, CommandStart
+from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
+
+from game_states import Game
 
 router = Router()
 
@@ -18,13 +22,24 @@ START_TEXT = """
 
 
 @router.message(CommandStart())
-async def cmd_start(message):
+async def cmd_start(message: Message):
     await message.answer(START_TEXT)
 
 @router.message(Command("help"))
-async def cmd_help(message):
+async def cmd_help(message: Message):
     await message.answer(f"Hello, {message.from_user.full_name}!")
 
 @router.message(F.text == "🎮начать игру")
-async def start_game(message):
+async def start_game(message: Message, state: FSMContext):
+    await state.set_state(Game.game_configuration)
+    await message.answer(f"напишите номер игры (0-9)")
+
+@router.message(Game.game_configuration)
+async def game_configuration(message: Message, state: FSMContext):
+    try :
+        game_number = int(message.text)
+    except:
+        await message.answer("Нужно ввести число от 0 до 9")
+        
     await message.answer(f"Hello, {message.from_user.full_name}!")
+    await state.set_state(Game.game)

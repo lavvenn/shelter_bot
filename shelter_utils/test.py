@@ -36,11 +36,27 @@ cards = [Card(
 
 # print(cards[1])
 
-while True:
-     card_num = int(input("напиши номер карты"))
-     print(cards[card_num - 1].get_all_characteristics())
+
+game = Game(
+    name="игра",
+    catastrophe=catastrophe,
+    cards=cards,
+    shelter=shelter
+)
 
 
-# game = Game(
-    
-# )
+if __name__ == "__main__":
+    print(game.get_catastrophe())
+    print(game.get_shelter())
+    print(game.get_cards())
+    print(cards)
+
+else:
+    print(f"вы импортирывали модуль который не должны были --> {__name__}")
+
+
+
+#XXX это для теста карт
+# while True:
+#      card_num = int(input("напиши номер карты"))
+#      print(cards[card_num - 1].get_all_characteristics())

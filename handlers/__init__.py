@@ -1,1 +1,1 @@
-from . import start, ingame
+from . import ingame, start_handler

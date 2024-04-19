@@ -33,7 +33,9 @@ class Card:
 
 
     def __str__(self):
-        return f"номер карты: {self.number}\n"
+        return f"картa номер: {self.number}\n"
+    
+    __repr__ = __str__
 
 
     def get_all_characteristics(self):
@@ -65,13 +67,18 @@ class Shelter:
 
 class Game:
 
-    def __init__(self, catastrophe: Catastrophe, cards: list[Card], shelter: Shelter):
+    def __init__(self, name: str, catastrophe: Catastrophe, cards: list[Card], shelter: Shelter):
+        self.name = name
         self.catastrophe = catastrophe
         self.cards = cards
+        self.shelter = shelter
 
+    def __str__(self) -> str:
+        return f"игра: {self.name}\n"
+    __repr__ = __str__
 
     def get_cards(self):
-        pass
+        return self.cards
 
     def get_catastrophe(self):
 
