@@ -3,7 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 
 
-from handlers import satrt, ingame
+from handlers import main, ingame
 
 from config import TOKEN
 
@@ -11,7 +11,7 @@ async def main():
     bot = Bot(TOKEN)
     dp = Dispatcher()
 
-    dp.include_routers(satrt.router,
+    dp.include_routers(main.router,
                     #    ingame.router
                        )
                       
