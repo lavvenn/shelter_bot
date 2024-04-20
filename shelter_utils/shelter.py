@@ -77,7 +77,7 @@ class Game:
         return f"игра: {self.name}\n"
     __repr__ = __str__
 
-    def get_cards(self):
+    def get_card_names(self):
         return self.cards
 
     def get_catastrophe(self):

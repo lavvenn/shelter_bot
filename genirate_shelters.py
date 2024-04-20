@@ -34,7 +34,7 @@ games = [shelter.Game(
 ) for i in range(10)]
 
 print(games)
-print(games[1].get_cards()[0].get_all_characteristics())
-print(games[1].get_cards())
+print(games[1].get_card_names()[0].get_all_characteristics())
+print(games[1].get_card_names())
 print(games[2].get_shelter())
 print(games[3].get_shelter())
