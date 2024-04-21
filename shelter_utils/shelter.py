@@ -39,18 +39,18 @@ class Card:
 
 
     def get_all_characteristics(self):
-        return {"номер": self.number,
-                "професия": self.profession,
-                "био" : self.bio_characteristics,
-                "здоровье" : self.health,
-                "хобби" : self.hobby,
-                "фобия" : self.phobia,
-                "характер" : self.character,
-                "доп. инфо" : self.additional_information,
-                "знания" : self.knowledge,
-                "багаж" : self.baggage,
-                "действие" : self.action_card,
-                "условие" : self.condition_card
+        return {"number": self.number,
+                "profession": self.profession,
+                "biological characteristics": self.bio_characteristics,
+                "health": self.health,
+                "hobby": self.hobby,
+                "phobia": self.phobia,
+                "character": self.character,
+                "additional information": self.additional_information,
+                "knowledge": self.knowledge,
+                "baggage": self.baggage,
+                "action": self.action_card,
+                "condition": self.condition_card
                 }
     
 
