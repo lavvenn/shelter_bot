@@ -56,7 +56,7 @@ class Card:
 
 
 class Shelter:
-    def __init__(self, name: str, description: str, rooms: str, loot:str, size: int, time: int):
+    def __init__(self, name: str, description: str, rooms: list[str], loot:list[str], size: int, time: int):
         self.name = name
         self.description = description
         self.rooms = rooms
@@ -77,7 +77,7 @@ class Game:
         return f"game: {self.name}\n"
     __repr__ = __str__
 
-    def get_card_names(self):
+    def get_cards(self):
         return self.cards
 
     def get_catastrophe(self):
