@@ -74,7 +74,7 @@ class Game:
         self.shelter = shelter
 
     def __str__(self) -> str:
-        return f"игра: {self.name}\n"
+        return f"game: {self.name}\n"
     __repr__ = __str__
 
     def get_card_names(self):
