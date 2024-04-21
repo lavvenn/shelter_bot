@@ -1,6 +1,6 @@
 import random
 
-from shelter_utils import shelter, characteristics
+from shelter_game import shelter, characteristics
 
 games = [shelter.Game(
     name=f"игра {i}",
