@@ -33,7 +33,7 @@ class Card:
 
 
     def __str__(self):
-        return f"картa номер: {self.number}\n"
+        return f"card number: {self.number}\n"
     
     __repr__ = __str__
 
