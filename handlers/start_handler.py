@@ -5,6 +5,10 @@ from aiogram.fsm.context import FSMContext
 
 from game_states import Game
 
+from shelter_game.shelter_utils import get_random_game
+
+from keyboards import builders as b
+
 router = Router()
 
 START_TEXT = """
@@ -32,14 +36,16 @@ async def cmd_help(message: Message):
 @router.message(F.text == "🎮начать игру")
 async def start_game(message: Message, state: FSMContext):
     await state.set_state(Game.game_configuration)
-    await message.answer(f"напишите номер игры (0-9)")
+    await message.answer(f"напишите номер игры")
 
 @router.message(Game.game_configuration)
 async def game_configuration(message: Message, state: FSMContext):
     try :
         game_number = int(message.text)
     except:
-        await message.answer("Нужно ввести число от 0 до 9")
+        await message.answer("Нужно ввести число")
+
+    await state.update_data(game = get_random_game(message.text, 5))
         
-    await message.answer(f"Hello, {message.from_user.full_name}!")
     await state.set_state(Game.game)
+    await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))

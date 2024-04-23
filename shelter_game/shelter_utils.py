@@ -1,9 +1,9 @@
 import random
 
-import characteristics
-import shelters
+import shelter_game.characteristics as characteristics
+import shelter_game.shelters as shelters
 
-from shelter import *
+from shelter_game.shelter import *
 
 def _get_random_bio_characteristics() -> str:
     age = random.randint(18, 80)
@@ -60,3 +60,22 @@ def get_random_game(name: str, number_of_cards: int) -> Game:
     shelter = _get_random_shelter()
 
     return Game(name=name, catastrophe=catastrophe, cards=cards, shelter=shelter)
+
+
+def print_card(card: Card)-> str:
+    text = f"""
+    **Карточка игрока номер:**{card.number}
+    
+    **Биологические характеристики:** {card.bio_characteristics}
+    **Здоровье:** {card.health}
+    **Хобби:** {card.hobby}
+    **Фобия:** {card.phobia}
+    **Характер:** {card.character}
+    **Дополнительная информация:** {card.additional_information}
+    **Знания:** {card.knowledge}
+    **Багаж:** {card.baggage}
+    **Деятельность:** {card.action_card}
+    **Состояние:** {card.condition_card}
+    """
+    return text 
+        
