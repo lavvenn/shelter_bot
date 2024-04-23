@@ -1,1 +1,3 @@
 TOKEN = ""
+
+ADMINS_LIST = [""]

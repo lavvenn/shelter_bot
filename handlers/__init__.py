@@ -1,1 +1,1 @@
-from . import ingame, start_handler
+from . import ingame, start_handler, admin
