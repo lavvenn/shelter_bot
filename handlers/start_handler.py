@@ -32,14 +32,22 @@ START_TEXT = """
 async def cmd_start(message: Message):
     await message.answer(START_TEXT, reply_markup=r.main_kb)
 
+
 @router.message(Command("help"))
 async def cmd_help(message: Message):
     await message.answer(f"Hello, {message.from_user.full_name}!")
+
+
+@router.message(Command("id"))
+async def cmd_id(message: Message):
+    await message.answer(f"id: {message.from_user.id}")
+
 
 @router.message(F.text == "🎮начать игру")
 async def start_game(message: Message, state: FSMContext):
     await state.set_state(Game.game_configuration)
     await message.answer(f"напишите название игры")
+
 
 @router.message(Game.game_configuration)
 async def game_configuration(message: Message, state: FSMContext):

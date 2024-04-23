@@ -1,3 +1,3 @@
 TOKEN = ""
 
-ADMINS_LIST = [""]
+ADMINS_LIST = []

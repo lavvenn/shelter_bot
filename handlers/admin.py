@@ -9,6 +9,6 @@ from handlers.start_handler import all_games
 
 router = Router()
 
-@router.message(Command("admin"), F.from_user.id in ADMINS_LIST)
+@router.message(Command("admin"), F.from_user.id.in_(ADMINS_LIST))
 async def cmd_admin(message: Message):
     await message.answer(f" all games: {all_games}")
