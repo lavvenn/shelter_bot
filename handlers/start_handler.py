@@ -43,7 +43,7 @@ async def cmd_id(message: Message):
     await message.answer(f"id: {message.from_user.id}")
 
 
-@router.message(F.text == "🎮начать игру")
+@router.message(F.text == "🆕️начать новую игру")
 async def start_game(message: Message, state: FSMContext):
     await state.set_state(Game.game_configuration)
     await message.answer(f"напишите название игры")
@@ -62,3 +62,18 @@ async def game_configuration(message: Message, state: FSMContext):
         
     await state.set_state(Game.game)
     await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))
+
+@router.message(F.text == "🎮присоединится к игре")
+async def join_game(message: Message, state: FSMContext):
+    await message.answer(f"напишите название игры")
+    await state.set_state(Game.join_game)
+
+@router.message(Game.join_game)
+async def joining_to_game(message: Message, state: FSMContext):
+    global all_games
+    if message.text in all_games.keys():
+        await state.update_data(game = all_games[message.text])
+        await state.set_state(Game.game)
+        await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))
+    else:
+        await message.answer(f"игры с таким названием не существует")
