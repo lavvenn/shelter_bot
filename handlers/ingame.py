@@ -3,10 +3,11 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from game_states import Game
-from keyboards.builders import print_kards
+from keyboards.builders import print_kards, get_standart_kb
+from keyboards.reply import main_kb
 from keyboards.inline import back_kb
 
-from shelter_game.shelter_utils import get_random_game, print_card
+from shelter_game.shelter_utils import  print_card
 
 
 router = Router()
@@ -15,7 +16,14 @@ router = Router()
 async def game(message: Message, state: FSMContext):
     data = await state.get_data()
     game = data["game"]
+    await message.answer(f"вы начали игру", reply_markup=get_standart_kb("⛔️выйти из игры"))
     await message.answer(f"вот карточки игроков", reply_markup=print_kards(game.get_cards()))
+
+
+@router.message(Game.game, F.text == "⛔️выйти из игры")
+async def leave_game(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(f"вы вышли из игры", reply_markup=main_kb)
 
 
 @router.callback_query(Game.game, F.data.startswith("open"))
