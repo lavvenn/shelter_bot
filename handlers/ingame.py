@@ -11,7 +11,7 @@ from shelter_game.shelter_utils import get_random_game, print_card
 
 router = Router()
 
-@router.message(Game.game)
+@router.message(Game.game, F.text == "🚀старт")
 async def game(message: Message, state: FSMContext):
     data = await state.get_data()
     game = data["game"]
@@ -22,6 +22,7 @@ async def game(message: Message, state: FSMContext):
 async def open_card(query: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     game = data["game"]
+    #17 - количество символов перед номером карточки в callback_data
     card = game.cards[int(query.data[17:])-1]
     await query.message.edit_text(text = print_card(card), reply_markup=back_kb, parse_mode="Markdown")
 

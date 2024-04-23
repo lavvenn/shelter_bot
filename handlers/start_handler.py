@@ -8,6 +8,9 @@ from game_states import Game
 from shelter_game.shelter_utils import get_random_game
 
 from keyboards import builders as b
+from keyboards import reply as r
+
+all_games = {}
 
 router = Router()
 
@@ -27,7 +30,7 @@ START_TEXT = """
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    await message.answer(START_TEXT)
+    await message.answer(START_TEXT, reply_markup=r.main_kb)
 
 @router.message(Command("help"))
 async def cmd_help(message: Message):
@@ -36,16 +39,18 @@ async def cmd_help(message: Message):
 @router.message(F.text == "🎮начать игру")
 async def start_game(message: Message, state: FSMContext):
     await state.set_state(Game.game_configuration)
-    await message.answer(f"напишите номер игры")
+    await message.answer(f"напишите название игры")
 
 @router.message(Game.game_configuration)
 async def game_configuration(message: Message, state: FSMContext):
-    try :
-        game_number = int(message.text)
-    except:
-        await message.answer("Нужно ввести число")
+    global all_games
 
-    await state.update_data(game = get_random_game(message.text, 5))
+    if not message.text in all_games.keys():
+        all_games[message.text] = get_random_game(name = message.text, number_of_cards = 5)
+    else:
+        await message.answer(f"игра с таким названием уже существует")
+
+    await state.update_data(game = all_games[message.text])
         
     await state.set_state(Game.game)
     await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))
