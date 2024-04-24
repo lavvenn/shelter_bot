@@ -38,7 +38,7 @@ class Card:
     __repr__ = __str__
 
 
-    def get_all_characteristics(self):
+    def get_all_characteristics(self)->dict:
         return {"number": self.number,
                 "profession": self.profession,
                 "biological characteristics": self.bio_characteristics,
@@ -77,16 +77,16 @@ class Game:
         return f"game: {self.name}\n"
     __repr__ = __str__
 
-    def get_cards(self):
+    def get_cards(self)->list[Card]:
         return self.cards
 
-    def get_catastrophe(self):
+    def get_catastrophe(self)-> dict:
 
         catastrophe = self.catastrophe
 
         return {"name": catastrophe.name, "description": catastrophe.description}
     
-    def get_shelter(self):
+    def get_shelter(self)-> dict:
 
         shelter = self.shelter
 
