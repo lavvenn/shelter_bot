@@ -21,9 +21,9 @@ def _get_random_bio_characteristics() -> str:
         return ret_str
     
 
-def get_random_card()-> Card:
+def get_random_card(card_numder)-> Card:
      return Card(
-        number=i,
+        number=card_numder,
         profession=random.choice(characteristics.professions),
         bio_characteristics= _get_random_bio_characteristics(),
         health=random.choice(characteristics.health),
@@ -60,7 +60,7 @@ def get_random_game(name: str, number_of_cards: int) -> Game:
 
     catastrophe = _get_random_catastrophe()
 
-    cards = [get_random_card() for i  in range (number_of_cards) ]
+    cards = [get_random_card(i) for i  in range (number_of_cards) ]
     
     shelter = _get_random_shelter()
 
@@ -72,6 +72,7 @@ def print_card(card: Card)-> str:
     **Карточка игрока номер:**{card.number}
     
     **Биологические характеристики:** {card.bio_characteristics}
+    **Профессия:** {card.profession}
     **Здоровье:** {card.health}
     **Хобби:** {card.hobby}
     **Фобия:** {card.phobia}
