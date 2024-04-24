@@ -19,29 +19,10 @@ def _get_random_bio_characteristics() -> str:
         return ret_str 
     else:
         return ret_str
+    
 
-def _get_random_shelter() -> Shelter:  
-    shelter_name = random.choice(list(shelters.shelters_dict.keys()))
-    shelter_discription = shelters.shelters_dict[shelter_name]
-    rooms = random.choice(shelters.rooms_list)
-    number_of_items = random.randint(1,4)
-    items = [random.choice(shelters.items) for _ in range(number_of_items)]
-    size = f"{random.randint(100,550)} m²"
-    time = f"{random.randint(1,5)} лет"
-
-    return Shelter(name=shelter_name, description=shelter_discription, rooms=rooms, loot=items, size=size, time=time)
-
-def _get_random_catastrophe() -> Catastrophe:
-    catastrophe_name = random.choice(list(shelters.catastrophes.keys()))
-
-    return Catastrophe(name=catastrophe_name, description=shelters.catastrophes[catastrophe_name])
-
-
-def get_random_game(name: str, number_of_cards: int) -> Game:
-
-    catastrophe = _get_random_catastrophe()
-
-    cards = [Card(
+def get_random_card()-> Card:
+     return Card(
         number=i,
         profession=random.choice(characteristics.professions),
         bio_characteristics= _get_random_bio_characteristics(),
@@ -55,7 +36,31 @@ def get_random_game(name: str, number_of_cards: int) -> Game:
         action_card="чтото",
         condition_card="чтото",
     )
-        for i  in range (number_of_cards) ]
+
+
+def _get_random_shelter() -> Shelter:  
+    shelter_name = random.choice(list(shelters.shelters_dict.keys()))
+    shelter_discription = shelters.shelters_dict[shelter_name]
+    rooms = random.choice(shelters.rooms_list)
+    number_of_items = random.randint(1,4)
+    items = [random.choice(shelters.items) for _ in range(number_of_items)]
+    size = f"{random.randint(100,550)} m²"
+    time = f"{random.randint(1,5)} лет"
+
+    return Shelter(name=shelter_name, description=shelter_discription, rooms=rooms, loot=items, size=size, time=time)
+
+
+def _get_random_catastrophe() -> Catastrophe:
+    catastrophe_name = random.choice(list(shelters.catastrophes.keys()))
+
+    return Catastrophe(name=catastrophe_name, description=shelters.catastrophes[catastrophe_name])
+
+
+def get_random_game(name: str, number_of_cards: int) -> Game:
+
+    catastrophe = _get_random_catastrophe()
+
+    cards = [get_random_card() for i  in range (number_of_cards) ]
     
     shelter = _get_random_shelter()
 
