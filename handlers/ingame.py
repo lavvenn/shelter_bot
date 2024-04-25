@@ -12,6 +12,8 @@ from shelter_game.shelter_utils import  print_card
 
 router = Router()
 
+#<--message handlers-->
+
 @router.message(Game.game, F.text == "🚀старт")
 async def game(message: Message, state: FSMContext):
     data = await state.get_data()
@@ -25,6 +27,8 @@ async def leave_game(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(f"вы вышли из игры", reply_markup=main_kb)
 
+
+#<--callback_query handlers-->
 
 @router.callback_query(Game.game, F.data.startswith("open"))
 async def open_card(query: CallbackQuery, state: FSMContext):

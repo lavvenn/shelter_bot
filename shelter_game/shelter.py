@@ -5,6 +5,7 @@ class Catastrophe:
 
 class Card:
     def __init__(self,
+                 user_id: int,
                  number: int,
                  profession: str, 
                  bio_characteristics: str, 
@@ -18,6 +19,7 @@ class Card:
                  action_card: str,
                  condition_card: str):
         
+        self.user_id = user_id
         self.number = number + 1
         self.profession = profession
         self.bio_characteristics = bio_characteristics
@@ -67,15 +69,21 @@ class Shelter:
 
 class Game:
 
-    def __init__(self, name: str, catastrophe: Catastrophe, cards: list[Card], shelter: Shelter):
+    def __init__(self, name: str, catastrophe: Catastrophe, shelter: Shelter):
         self.name = name
         self.catastrophe = catastrophe
-        self.cards = cards
+        self.cards = []
         self.shelter = shelter
 
     def __str__(self) -> str:
         return f"game: {self.name}\n"
     __repr__ = __str__
+
+    def add_card(self, card: Card):
+        self.cards.append(card)
+
+    def get_users_id(self)->list[int]:
+        return [card.user_id for card in self.cards]
 
     def get_cards(self)->list[Card]:
         return self.cards

@@ -4,7 +4,7 @@ from aiogram.filters.command import Command
 
 from config import ADMINS_LIST
 
-from handlers.start_handler import all_games
+from handlers.start import all_games
 
 from keyboards import admin_kb as kb
 

@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 
 from game_states import Game
 
-from shelter_game.shelter_utils import get_random_game
+from shelter_game.shelter_utils import get_random_game, get_random_card
 
 from keyboards import builders as b
 from keyboards import reply as r
@@ -55,7 +55,8 @@ async def game_configuration(message: Message, state: FSMContext):
     global all_games
 
     if not message.text in all_games.keys():
-        all_games[message.text] = get_random_game(name = message.text, number_of_cards = 5)
+        all_games[message.text] = get_random_game(name = message.text)
+        all_games[message.text].add_card(get_random_card(0,message.from_user.id))
     else:
         await message.answer(f"игра с таким названием уже существует")
 
