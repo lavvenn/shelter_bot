@@ -1,6 +1,6 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.filters.command import Command, CommandStart
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from game_states import Game
@@ -9,6 +9,7 @@ from shelter_game.shelter_utils import get_random_game, get_random_card
 
 from keyboards import builders as b
 from keyboards import reply as r
+from keyboards import inline as i
 
 all_games = {}
 
@@ -29,6 +30,9 @@ START_TEXT = """
 """
 
 
+
+
+#<--main commands-->
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await message.answer(START_TEXT, reply_markup=r.main_kb)
@@ -44,14 +48,15 @@ async def cmd_id(message: Message):
     await message.answer(f"id: {message.from_user.id}")
 
 
+#<--start_game handlers-->
 @router.message(F.text == "🆕️начать новую игру")
 async def start_game(message: Message, state: FSMContext):
-    await state.set_state(Game.game_configuration)
+    await state.set_state(Game.configuration)
     await message.answer(f"напишите название игры")
 
 
-@router.message(Game.game_configuration)
-async def game_configuration(message: Message, state: FSMContext):
+@router.message(Game.configuration)
+async def game_configuration(message: Message, state: FSMContext,bot:Bot):
     global all_games
 
     if not message.text in all_games.keys():
@@ -60,22 +65,50 @@ async def game_configuration(message: Message, state: FSMContext):
     else:
         await message.answer(f"игра с таким названием уже существует")
 
-    await state.update_data(game = all_games[message.text])
+    await state.update_data(game_name = message.text)
         
-    await state.set_state(Game.game)
-    await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))
+    await state.set_state(Game.waiting)
+    await message.answer("ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт", reply_markup=b.get_standart_kb("🚀старт"))
+    await message.answer(f"пользователи в игре\n1-@{message.from_user.username}", reply_markup=i.update_users_list_kb)
+
 
 @router.message(F.text == "🎮присоединится к игре")
 async def join_game(message: Message, state: FSMContext):
     await message.answer(f"напишите название игры")
-    await state.set_state(Game.join_game)
+    await state.set_state(Game.join)
 
-@router.message(Game.join_game)
+
+@router.message(Game.join)
 async def joining_to_game(message: Message, state: FSMContext):
     global all_games
     if message.text in all_games.keys():
-        await state.update_data(game = all_games[message.text])
-        await state.set_state(Game.game)
+        await state.update_data(game_name = message.text)
+        await state.set_state(Game.waiting)
         await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))
     else:
         await message.answer(f"игры с таким названием не существует")
+
+
+#<--waiting handlers-->
+        
+@router.message(Game.waiting)
+async def waiting(message: Message, state: FSMContext):
+    data = await state.get_data()
+    game = data["game_name"]
+    await message.answer(f"вы ожидаете игроков в игре :{game}")
+
+@router.callback_query(Game.waiting, F.data == "update_users_list")
+async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
+    global all_games
+
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=query.message.chat.id) for user_id in game.get_users_id()]
+    all_users_names = [m_data.user.username for m_data in all_users_member_data]
+    users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
+
+    try:
+        await query.message.edit_text("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
+        await query.answer()
+    except:
+        await query.answer()
