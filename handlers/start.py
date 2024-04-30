@@ -79,12 +79,25 @@ async def join_game(message: Message, state: FSMContext):
 
 
 @router.message(Game.join)
-async def joining_to_game(message: Message, state: FSMContext):
+async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
     global all_games
     if message.text in all_games.keys():
+        game = all_games[message.text]
+
+        #len(game.get_users_id())-1 - номер добовляемого игрока игрока
+        game.add_card(get_random_card(len(game.get_users_id())-1,message.from_user.id))
+
         await state.update_data(game_name = message.text)
         await state.set_state(Game.waiting)
-        await message.answer("вы можете начать игру", reply_markup=b.get_standart_kb("🚀старт"))
+        await message.answer("вы ожидаете игроков в игре")
+
+        print(game.get_users_id())
+
+        all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=user_id) for user_id in game.get_users_id()]
+        all_users_names = [member_data.user.username for member_data in all_users_member_data]
+        users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
+
+        await message.answer("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
     else:
         await message.answer(f"игры с таким названием не существует")
 
@@ -103,8 +116,8 @@ async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
 
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=query.message.chat.id) for user_id in game.get_users_id()]
-    all_users_names = [m_data.user.username for m_data in all_users_member_data]
+    all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=user_id) for user_id in game.get_users_id()]
+    all_users_names = [member_data.user.username for member_data in all_users_member_data]
     users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
 
     try:
