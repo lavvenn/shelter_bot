@@ -125,3 +125,14 @@ async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
         await query.answer()
     except:
         await query.answer()
+
+#<--exception handlers-->
+
+@router.message()
+async def mseesage_exception(message: Message):
+    await message.answer(f"извините я не могу понять ваш запрос для того чтобы перезапустить бота нажмите нажмите /start")
+
+@router.callback_query()
+async def callback_exception(query: CallbackQuery):
+    await query.message.answer(f"извините я не могу понять ваш запрос для того чтобы перезапустить бота нажмите нажмите /start")
+    await query.answer("нажмите /start")
