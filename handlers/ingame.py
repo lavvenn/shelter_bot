@@ -25,8 +25,6 @@ async def game(message: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
     game_name = data["game_name"]
     game = all_games[game_name]
-    await message.answer(f"вы начали игру", reply_markup=get_standart_kb("⛔️выйти из игры"))
-    # await message.answer(f"вот карточки игроков", reply_markup=print_kards(game.get_cards()))
     [await bot.send_message(chat_id=chat_id, text = "вы можете нажать на кнопку 🏁старт для начала игры", reply_markup=get_standart_kb('🏁старт')) for chat_id in game.get_users_id()]
 
 @router.message(Game.waiting, F.text == "🏁старт")
@@ -34,6 +32,7 @@ async def start_game(message: Message, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
+    await message.answer(f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры", reply_markup=get_standart_kb("⛔️выйти из игры"))
     await message.answer(f"вот карточки игроков", reply_markup=print_kards(game.get_cards()))
     await state.set_state(Game.game)
 
