@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton,ReplyKeyboardRemove
 
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -6,3 +6,5 @@ main_kb = ReplyKeyboardMarkup(
         [KeyboardButton(text="🎮присоединится к игре")]
     ]
  , resize_keyboard=True)
+
+rm_kb = ReplyKeyboardRemove()

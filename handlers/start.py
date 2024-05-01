@@ -84,12 +84,11 @@ async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
     if message.text in all_games.keys():
         game = all_games[message.text]
 
-        #len(game.get_users_id())-1 - номер добовляемого игрока игрока
-        game.add_card(get_random_card(len(game.get_users_id())-1,message.from_user.id))
+        game.add_card(get_random_card(len(game.get_users_id()),message.from_user.id))
 
         await state.update_data(game_name = message.text)
         await state.set_state(Game.waiting)
-        await message.answer("вы ожидаете игроков в игре")
+        await message.answer("вы ожидаете игроков в игре игра начнётся когда её создатель её  начнёт", reply_markup=r.rm_kb)
 
         print(game.get_users_id())
 
@@ -104,11 +103,6 @@ async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
 
 #<--waiting handlers-->
         
-@router.message(Game.waiting)
-async def waiting(message: Message, state: FSMContext):
-    data = await state.get_data()
-    game = data["game_name"]
-    await message.answer(f"вы ожидаете игроков в игре :{game}")
 
 @router.callback_query(Game.waiting, F.data == "update_users_list")
 async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
@@ -128,11 +122,11 @@ async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
 
 #<--exception handlers-->
 
-@router.message()
-async def mseesage_exception(message: Message):
-    await message.answer(f"извините я не могу понять ваш запрос для того чтобы перезапустить бота нажмите нажмите /start")
+# @router.message()
+# async def mseesage_exception(message: Message):
+#     await message.answer(f"извините я не могу понять ваш запрос для того чтобы перезапустить бота нажмите нажмите /start")
 
-@router.callback_query()
-async def callback_exception(query: CallbackQuery):
-    await query.message.answer(f"извините я не могу понять ваш запрос для того чтобы перезапустить бота нажмите нажмите /start")
-    await query.answer("нажмите /start")
+# @router.callback_query()
+# async def callback_exception(query: CallbackQuery):
+#     await query.message.answer(f"извините я не могу понять ваш запрос для того чтобы перезапустить бота нажмите нажмите /start")
+#     await query.answer("нажмите /start")
