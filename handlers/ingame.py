@@ -25,6 +25,7 @@ async def game(message: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
     game_name = data["game_name"]
     game = all_games[game_name]
+    game.start()
     [await bot.send_message(chat_id=chat_id, text = "вы можете нажать на кнопку 🏁старт для начала игры", reply_markup=get_standart_kb('🏁старт')) for chat_id in game.get_users_id()]
 
 @router.message(Game.waiting, F.text == "🏁старт")

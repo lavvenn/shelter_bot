@@ -33,11 +33,19 @@ class Card:
         self.action_card = action_card
         self.condition_card = condition_card
 
+        self.online = True
+
 
     def __str__(self):
         return f"card number: {self.number}"
     
     __repr__ = __str__
+
+    def leave(self):
+        self.online = False
+
+    def join(self):
+        self.online = True
 
 
     def get_all_characteristics(self)->dict:
@@ -74,10 +82,16 @@ class Game:
         self.catastrophe = catastrophe
         self.cards = []
         self.shelter = shelter
+        self.started = False
 
     def __str__(self) -> str:
         return f"game: {self.name}\n"
     __repr__ = __str__
+
+
+    def start(self):
+        self.started = True
+
 
     def add_card(self, card: Card):
         self.cards.append(card)

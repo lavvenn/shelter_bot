@@ -84,19 +84,29 @@ async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
     if message.text in all_games.keys():
         game = all_games[message.text]
 
-        game.add_card(get_random_card(len(game.get_users_id()),message.from_user.id))
+        if not game.started:
+            game.add_card(get_random_card(len(game.get_users_id()),message.from_user.id))
 
-        await state.update_data(game_name = message.text)
-        await state.set_state(Game.waiting)
-        await message.answer("вы ожидаете игроков в игре игра начнётся когда её создатель её  начнёт", reply_markup=r.rm_kb)
+            await state.update_data(game_name = message.text)
+            await state.set_state(Game.waiting)
+            await message.answer("вы ожидаете игроков в игре игра начнётся когда её создатель её  начнёт", reply_markup=r.rm_kb)
 
-        print(game.get_users_id())
+            print(game.get_users_id())
 
-        all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=user_id) for user_id in game.get_users_id()]
-        all_users_names = [member_data.user.username for member_data in all_users_member_data]
-        users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
+            all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=user_id) for user_id in game.get_users_id()]
+            all_users_names = [member_data.user.username for member_data in all_users_member_data]
+            users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
 
-        await message.answer("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
+            await message.answer("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
+
+        else:
+            if message.from_user.id in game.get_users_id():
+                await state.update_data(game_name = message.text)
+                await state.set_state(Game.game)
+                await message.answer(f"вы вернулись в игру", reply_markup=b.get_standart_kb("🏁старт"))
+
+            else:
+                await message.answer(f"игра уже началась, вы не можите присоединиться к ней")
     else:
         await message.answer(f"игры с таким названием не существует")
 
@@ -120,7 +130,7 @@ async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
     except:
         await query.answer()
 
-#<--exception handlers-->
+#<--exception handlers--> не работают т.к в aiogram 3 хендлеры без сосотояния срабатывают на каждом состоянии
 
 # @router.message()
 # async def mseesage_exception(message: Message):
