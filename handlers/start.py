@@ -130,6 +130,8 @@ async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
     except:
         await query.answer()
 
+
+#TODO: #32940378
 #<--exception handlers--> не работают т.к в aiogram 3 хендлеры без сосотояния срабатывают на каждом состоянии
 
 # @router.message()
