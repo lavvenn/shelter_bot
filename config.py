@@ -1,3 +1,0 @@
-TOKEN = ""
-
-ADMINS_LIST = []
