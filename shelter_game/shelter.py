@@ -7,31 +7,34 @@ class Card:
     def __init__(self,
                  user_id: int,
                  number: int,
-                 profession: str, 
-                 bio_characteristics: str, 
-                 health: str, 
-                 hobby: str, 
-                 phobia: str,
-                 character: str, 
-                 additional_information: str,
-                 knowledge: str,
-                 baggage: str,
-                 action_card: str,
-                 condition_card: str):
+                 profession: dict[str, list[str, bool]], 
+                 bio_characteristics: dict[str, list[str, bool]], 
+                 health: dict[str, list[str, bool]], 
+                 hobby: dict[str, list[str, bool]], 
+                 phobia: dict[str, list[str, bool]],
+                 character: dict[str, list[str, bool]], 
+                 additional_information: dict[str, list[str, bool]],
+                 knowledge: dict[str, list[str, bool]],
+                 baggage: dict[str, list[str, bool]],
+                 action_card: dict[str, list[str, bool]],
+                 condition_card: dict[str, list[str, bool]]):
         
         self.user_id = user_id
         self.number = number + 1
-        self.profession = profession
-        self.bio_characteristics = bio_characteristics
-        self.health = health
-        self.hobby = hobby
-        self.phobia = phobia
-        self.character = character
-        self.additional_information = additional_information
-        self.knowledge = knowledge
-        self.baggage = baggage
-        self.action_card = action_card
-        self.condition_card = condition_card
+
+        self.characteristics = {
+            "profession": profession,
+            "biological_characteristics": bio_characteristics,
+            "health": health,
+            "hobby": hobby,
+            "phobia": phobia,
+            "character": character,
+            "additional_information": additional_information,
+            "knowledge": knowledge,
+            "baggage": baggage,
+            "action_card": action_card,
+            "condition_card": condition_card
+        }
 
         self.online = True
 
@@ -48,19 +51,21 @@ class Card:
         self.online = True
 
 
+    def open_characteristic(self, characteristic: str):
+        try:
+            self.characteristics[characteristic][1] = True
+            return f"Вы открыли характеристику {characteristic}"
+        except:
+            return f"Характеристика {characteristic} не существует"
+        
+    def get_closed_characteristic(self) -> list[str]:
+        return [key for key, value in self.characteristics.items() if value[1] == False]
+
+
     def get_all_characteristics(self)->dict:
-        return {"number": self.number,
-                "profession": self.profession,
-                "biological characteristics": self.bio_characteristics,
-                "health": self.health,
-                "hobby": self.hobby,
-                "phobia": self.phobia,
-                "character": self.character,
-                "additional information": self.additional_information,
-                "knowledge": self.knowledge,
-                "baggage": self.baggage,
-                "action": self.action_card,
-                "condition": self.condition_card
+        return {
+                key: value
+                for key, value in self.characteristics.items()
                 }
     
 
@@ -106,10 +111,16 @@ class Game:
 
         catastrophe = self.catastrophe
 
-        return {"name": catastrophe.name, "description": catastrophe.description}
+        return {"name": catastrophe.name,
+                "description": catastrophe.description}
     
     def get_shelter(self)-> dict:
 
         shelter = self.shelter
 
-        return {"name": shelter.name, "description": shelter.description, "rooms": shelter.rooms, "loot":shelter.loot, "size":shelter.size, "time":shelter.time}
+        return {"name": shelter.name,
+                "description": shelter.description,
+                "rooms": shelter.rooms,
+                "loot":shelter.loot,
+                "size":shelter.size,
+                "time":shelter.time}

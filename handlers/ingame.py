@@ -3,7 +3,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from game_states import Game
-from keyboards.builders import print_kards, get_standart_kb
+from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_kb
 from keyboards.reply import main_kb
 from keyboards.inline import back_kb
 
@@ -53,7 +53,10 @@ async def open_card(query: CallbackQuery, state: FSMContext):
     game = all_games[data["game_name"]]
     #17 - количество символов перед номером карточки в callback_data
     card = game.cards[int(query.data[17:])-1]
-    await query.message.edit_text(text = print_card(card), reply_markup=back_kb, parse_mode="Markdown")
+    if card.user_id == query.from_user.id:
+        await query.message.edit_text(text = print_card(card), reply_markup=open_caracteristic_kb(card.get_closed_characteristic()), parse_mode="Markdown")
+    else:
+        await query.message.edit_text(text = print_card(card), reply_markup=back_kb, parse_mode="Markdown")
 
 @router.callback_query(Game.game, F.data == "back_to_card_list")
 async def back_to_card_list(query: CallbackQuery, state: FSMContext):

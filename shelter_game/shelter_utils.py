@@ -1,9 +1,29 @@
 import random
+import string
 
 import shelter_game.characteristics as characteristics
 import shelter_game.shelters as shelters
 
 from shelter_game.shelter import *
+
+def generate_digital_noise(num_lines: int = 1, line_length: int = 6) -> str:
+    # Список возможных символов для генерации
+    symbols = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:',.<>?/~`"
+    
+    # Список для хранения строк
+    lines = []
+    
+    # Генерация строк
+    for _ in range(num_lines):
+        # Создаем строку случайной длины
+        line = ' '.join(
+            ''.join(random.choice(symbols) for _ in range(line_length))
+            for _ in range(random.randint(1, 3))
+        )
+        lines.append(line)
+    
+    # Соединяем все строки в один текст, разделяя их новой строкой
+    return '\n'.join(lines)
 
 def _get_random_bio_characteristics() -> str:
     age = random.randint(18, 80)
@@ -18,22 +38,22 @@ def _get_random_bio_characteristics() -> str:
             ret_str += " беременная"
         return ret_str 
     else:
-        return ret_str
+        return str(ret_str)
     
 
 def get_random_card(card_numder: int, user_id: int)-> Card:
      return Card(
         user_id=user_id,
         number=card_numder,
-        profession=random.choice(characteristics.professions),
-        bio_characteristics= _get_random_bio_characteristics(),
-        health=random.choice(characteristics.health),
-        hobby=random.choice(characteristics.hobbies),
-        phobia=random.choice(characteristics.phobias),
-        character=random.choice(characteristics.character),
-        additional_information=random.choice(characteristics.additional_information),
-        knowledge=random.choice(characteristics.knowledge),
-        baggage=random.choice(characteristics.baggages),
+        profession=[random.choice(characteristics.professions), False],
+        bio_characteristics= [_get_random_bio_characteristics(), False],
+        health=[random.choice(characteristics.health), False],
+        hobby=[random.choice(characteristics.hobbies), False],
+        phobia=[random.choice(characteristics.phobias), False],
+        character=[random.choice(characteristics.character), False],
+        additional_information=[random.choice(characteristics.additional_information), False],
+        knowledge=[random.choice(characteristics.knowledge), False],
+        baggage=[random.choice(characteristics.baggages), False],
         action_card="чтото",
         condition_card="чтото",
     )
@@ -66,21 +86,32 @@ def get_random_game(name: str) -> Game:
     return Game(name=name, catastrophe=catastrophe, shelter=shelter)
 
 
+def show_characteristic(characteristic: list) -> str:
+    if characteristic[1] == True:
+        return characteristic[0]
+    else:
+        return "######"
+
 def print_card(card: Card)-> str:
+
+    characteristics_list = [characteric[0] for characteric in card.get_all_characteristics().values() if characteric[1] == True ]
+
+    print(card.open_characteristic("phobia"))
+
     text = f"""
     **Карточка игрока номер:**{card.number}
     
-    **Биологические характеристики:** {card.bio_characteristics}
-    **Профессия:** {card.profession}
-    **Здоровье:** {card.health}
-    **Хобби:** {card.hobby}
-    **Фобия:** {card.phobia}
-    **Характер:** {card.character}
-    **Дополнительная информация:** {card.additional_information}
-    **Знания:** {card.knowledge}
-    **Багаж:** {card.baggage}
-    **Деятельность:** {card.action_card}
-    **Состояние:** {card.condition_card}
+    **Биологические характеристики:** {show_characteristic(card.characteristics["biological_characteristics"])}
+    **Профессия:** {show_characteristic(card.characteristics["profession"])}
+    **Здоровье:** {show_characteristic(card.characteristics["health"])}
+    **Хобби:** {show_characteristic(card.characteristics["hobby"])}
+    **Фобия:** {show_characteristic(card.characteristics["phobia"])}
+    **Характер:** {show_characteristic(card.characteristics["character"])}
+    **Дополнительная информация:** {show_characteristic(card.characteristics["additional_information"])}
+    **Знания:** {show_characteristic(card.characteristics["knowledge"])}
+    **Багаж:** {show_characteristic(card.characteristics["baggage"])}
+    **Деятельность:** {show_characteristic(card.characteristics["action_card"])}
+    **Состояние:** {show_characteristic(card.characteristics["condition_card"])}
     """
     return text 
         
