@@ -7,18 +7,17 @@ class Card:
     def __init__(self,
                  user_id: int,
                  number: int,
-                 profession: dict[str, list[str, bool]], 
-                 bio_characteristics: dict[str, list[str, bool]], 
-                 health: dict[str, list[str, bool]], 
-                 hobby: dict[str, list[str, bool]], 
-                 phobia: dict[str, list[str, bool]],
-                 character: dict[str, list[str, bool]], 
-                 additional_information: dict[str, list[str, bool]],
-                 knowledge: dict[str, list[str, bool]],
-                 baggage: dict[str, list[str, bool]],
-                 action_card: dict[str, list[str, bool]],
-                 condition_card: dict[str, list[str, bool]]):
-        
+                 profession: list[list[str, bool]], 
+                 bio_characteristics: list[list[str, bool]], 
+                 health: list[list[str, bool]], 
+                 hobby: list[list[str, bool]], 
+                 phobia: list[list[str, bool]],
+                 character: list[list[str, bool]], 
+                 additional_information: list[list[str, bool]],
+                 knowledge: list[list[str, bool]],
+                 baggage: list[list[str, bool]],
+                 action_card: list[list[str, bool]],
+                 condition_card: list[list[str, bool]]):
         self.user_id = user_id
         self.number = number + 1
 
@@ -35,6 +34,9 @@ class Card:
             "action_card": action_card,
             "condition_card": condition_card
         }
+
+        print(self.characteristics)
+        print(hobby)
 
         self.online = True
 
