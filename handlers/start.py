@@ -62,14 +62,17 @@ async def game_configuration(message: Message, state: FSMContext,bot:Bot):
     if not message.text in all_games.keys():
         all_games[message.text] = get_random_game(name = message.text)
         all_games[message.text].add_card(get_random_card(0,message.from_user.id))
+
+        await state.update_data(game_name = message.text)
+        
+        await state.set_state(Game.waiting)
+        await message.answer("ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт", reply_markup=b.get_standart_kb("🚀старт"))
+        await message.answer(f"пользователи в игре\n1-@{message.from_user.username}", reply_markup=i.update_users_list_kb)
+
+
     else:
         await message.answer(f"игра с таким названием уже существует")
 
-    await state.update_data(game_name = message.text)
-        
-    await state.set_state(Game.waiting)
-    await message.answer("ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт", reply_markup=b.get_standart_kb("🚀старт"))
-    await message.answer(f"пользователи в игре\n1-@{message.from_user.username}", reply_markup=i.update_users_list_kb)
 
 
 @router.message(F.text == "🎮присоединится к игре")
