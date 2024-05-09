@@ -39,12 +39,12 @@ def get_standart_kb(buttons: str | list[str]) -> ReplyKeyboardMarkup:
 
 def print_kards(cards: list)->InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    [builder.row(InlineKeyboardButton(text=f"<--{card}-->", callback_data=f"open{card}")) for card in cards]
+    [builder.row(InlineKeyboardButton(text=f"<--{card}-->", callback_data=f"open_card_{card}")) for card in cards]
     # [builder.row(text=f"<--{card}-->", callback_data=f"open{card}") for card in cards]
     return builder.as_markup(resize_keyboard=True)
 
 def open_caracteristic_kb(closed_characteristic: list[str]) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    [builder.row(InlineKeyboardButton(text=translate_characteristic(characteristic), callback_data=f"open{characteristic}")) for characteristic in closed_characteristic]
+    [builder.row(InlineKeyboardButton(text=translate_characteristic(characteristic), callback_data=f"open_characteristic_{characteristic}")) for characteristic in closed_characteristic]
     builder.row(InlineKeyboardButton(text="⬅️назад", callback_data="back_to_card_list"))
     return builder.as_markup(resize_keyboard=True)

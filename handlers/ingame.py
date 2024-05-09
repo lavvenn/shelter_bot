@@ -46,21 +46,35 @@ async def leave_game(message: Message, state: FSMContext):
 
 #<--callback_query handlers-->
 
-@router.callback_query(Game.game, F.data.startswith("open"))
+@router.callback_query(Game.game, F.data.startswith("open_card_"))
 async def open_card(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    #17 - количество символов перед номером карточки в callback_data
-    card = game.cards[int(query.data[17:])-1]
+    #22 - количество символов перед номером карточки в callback_data
+    card = game.cards[int(query.data[22:])-1]
     if card.user_id == query.from_user.id:
         await query.message.edit_text(text = print_card(card), reply_markup=open_caracteristic_kb(card.get_closed_characteristic()), parse_mode="Markdown")
     else:
         await query.message.edit_text(text = print_card(card), reply_markup=back_kb, parse_mode="Markdown")
+
+@router.callback_query(Game.game, F.data.startswith("open_characteristic"))
+async def open_characteristic(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    card = game.get_card_by_user_id(query.from_user.id)
+    print(card)
+    card_index = game.cards.index(card)
+
+    all_games[data["game_name"]].cards[card_index].open_characteristic(query.data[20:])
+
+    await query.message.edit_text(text = print_card(card), reply_markup=open_caracteristic_kb(card.get_closed_characteristic()), parse_mode="Markdown")
+
 
 @router.callback_query(Game.game, F.data == "back_to_card_list")
 async def back_to_card_list(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    await query.message.edit_text(text = f"вот карточки игроков", reply_markup=print_kards(game.get_cards()))
+    await query.message.edit_text(text = f"карточки игроков", reply_markup=print_kards(game.get_cards()))

@@ -126,3 +126,11 @@ class Game:
                 "loot":shelter.loot,
                 "size":shelter.size,
                 "time":shelter.time}
+
+    def get_card_by_user_id(self, user_id: int)->Card:
+        for card in self.cards:
+            print(self.cards, card.user_id, user_id)
+            if card.user_id == user_id:
+                return card
+        else:
+            return "нет такой карточки"
