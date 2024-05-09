@@ -6,24 +6,6 @@ import shelter_game.shelters as shelters
 
 from shelter_game.shelter import *
 
-def generate_digital_noise(num_lines: int = 1, line_length: int = 6) -> str:
-    # Список возможных символов для генерации
-    symbols = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:',.<>?/~`"
-    
-    # Список для хранения строк
-    lines = []
-    
-    # Генерация строк
-    for _ in range(num_lines):
-        # Создаем строку случайной длины
-        line = ' '.join(
-            ''.join(random.choice(symbols) for _ in range(line_length))
-            for _ in range(random.randint(1, 3))
-        )
-        lines.append(line)
-    
-    # Соединяем все строки в один текст, разделяя их новой строкой
-    return '\n'.join(lines)
 
 def _get_random_bio_characteristics() -> str:
     age = random.randint(18, 80)
