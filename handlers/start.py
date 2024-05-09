@@ -105,7 +105,7 @@ async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
         else:
             if message.from_user.id in game.get_users_id():
                 await state.update_data(game_name = message.text)
-                await state.set_state(Game.game)
+                await state.set_state(Game.waiting)
                 await message.answer(f"вы вернулись в игру", reply_markup=b.get_standart_kb("🏁старт"))
 
             else:
