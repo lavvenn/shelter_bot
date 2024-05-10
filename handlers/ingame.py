@@ -9,7 +9,7 @@ from keyboards.inline import back_kb
 
 from shelter_game.shelter_utils import  print_card, print_my_card
 
-from handlers.start import all_games
+from handlers.start import all_games, waiting_rooms
 
 
 router = Router()
@@ -20,11 +20,12 @@ router = Router()
 
 @router.message(Game.waiting, F.text == "🚀старт")
 async def game(message: Message, state: FSMContext, bot: Bot):
-    global all_games
+    global all_games, waiting_rooms
 
     data = await state.get_data()
     game_name = data["game_name"]
     game = all_games[game_name]
+    del waiting_rooms[game_name]
     game.start()
     [await bot.send_message(chat_id=chat_id, text = "вы можете нажать на кнопку 🏁старт для начала игры", reply_markup=get_standart_kb('🏁старт')) for chat_id in game.get_users_id()]
 

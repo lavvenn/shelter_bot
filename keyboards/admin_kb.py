@@ -3,6 +3,7 @@ from aiogram.types import InlineKeyboardMarkup, ReplyKeyboardMarkup, InlineKeybo
 
 admin_panel_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text = "активные игры", callback_data="get_active_games")],
+    [InlineKeyboardButton(text = "комнаты ожидания", callback_data="get_all_waiting_rooms")]
 ])
 
 back_kb = InlineKeyboardMarkup(inline_keyboard=[

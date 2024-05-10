@@ -13,6 +13,8 @@ from keyboards import inline as i
 
 all_games = {}
 
+waiting_rooms = {}
+
 router = Router()
 
 START_TEXT = """
@@ -57,7 +59,7 @@ async def start_game(message: Message, state: FSMContext):
 
 @router.message(Game.configuration)
 async def game_configuration(message: Message, state: FSMContext,bot:Bot):
-    global all_games
+    global all_games, waiting_rooms
 
     if not message.text in all_games.keys():
         all_games[message.text] = get_random_game(name = message.text)
@@ -67,7 +69,10 @@ async def game_configuration(message: Message, state: FSMContext,bot:Bot):
         
         await state.set_state(Game.waiting)
         await message.answer("ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт", reply_markup=b.get_standart_kb("🚀старт"))
-        await message.answer(f"пользователи в игре\n1-@{message.from_user.username}", reply_markup=i.update_users_list_kb)
+        msg = await message.answer(f"пользователи в игре\n1-@{message.from_user.username}", reply_markup=i.update_users_list_kb)
+        waiting_rooms[message.text] = {message.from_user.id: msg.message_id}
+
+        print(waiting_rooms)
 
 
     else:
@@ -83,7 +88,7 @@ async def join_game(message: Message, state: FSMContext):
 
 @router.message(Game.join)
 async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
-    global all_games
+    global all_games, waiting_rooms
     if message.text in all_games.keys():
         game = all_games[message.text]
 
@@ -101,6 +106,10 @@ async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
             users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
 
             await message.answer("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
+            waiting_rooms[message.text][message.from_user.id] = message.message_id
+            for chat_id, message_id in waiting_rooms[message.text].items():
+                print(f"{chat_id}  " * 10)
+                await bot.edit_message_text(chat_id = chat_id,message_id=message_id, text = f"пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
 
         else:
             if message.from_user.id in game.get_users_id():

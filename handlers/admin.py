@@ -4,7 +4,7 @@ from aiogram.filters.command import Command
 
 from config import ADMINS_LIST
 
-from handlers.start import all_games
+from handlers.start import all_games, waiting_rooms
 
 from keyboards import admin_kb as kb
 
@@ -22,6 +22,10 @@ async def cmd_admin(message: Message):
 @router.callback_query(F.data == "get_active_games")
 async def get_active_games(query: CallbackQuery):
     await query.message.edit_text(f"вот активные игры \n{all_games}", reply_markup=kb.back_kb)
+
+@router.callback_query(F.data == "get_all_waiting_rooms")
+async def get_all_waiting_rooms(query: CallbackQuery):
+    await query.message.edit_text(f"вот все ожидающие игры \n{waiting_rooms}", reply_markup=kb.back_kb)
 
 
 @router.callback_query(F.data == "back_to_admin_panel")
