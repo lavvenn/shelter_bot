@@ -69,7 +69,7 @@ async def game_configuration(message: Message, state: FSMContext,bot:Bot):
         
         await state.set_state(Game.waiting)
         await message.answer("ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт", reply_markup=b.get_standart_kb("🚀старт"))
-        msg = await message.answer(f"пользователи в игре\n1-@{message.from_user.username}", reply_markup=i.update_users_list_kb)
+        msg = await message.answer(f"пользователи в игре\n1-@{message.from_user.username}")
         waiting_rooms[message.text] = {message.from_user.id: msg.message_id}
 
         print(waiting_rooms)
@@ -105,11 +105,12 @@ async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
             all_users_names = [member_data.user.username for member_data in all_users_member_data]
             users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
 
-            await message.answer("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
-            waiting_rooms[message.text][message.from_user.id] = message.message_id
+            await message.answer("пользователи в игре\n" + "".join(users))
+
             for chat_id, message_id in waiting_rooms[message.text].items():
                 print(f"{chat_id}  " * 10)
-                await bot.edit_message_text(chat_id = chat_id,message_id=message_id, text = f"пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
+                await bot.edit_message_text(chat_id = chat_id,message_id=message_id, text = f"пользователи в игре\n" + "".join(users))
+            waiting_rooms[message.text][message.from_user.id] = message.message_id
 
         else:
             if message.from_user.id in game.get_users_id():
