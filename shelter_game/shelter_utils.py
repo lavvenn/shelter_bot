@@ -85,39 +85,39 @@ def print_card(card: Card)-> str:
     characteristics_list = [characteric[0] for characteric in card.get_all_characteristics().values() if characteric[1] == True ]
 
     text = f"""
-    **Карточка игрока номер:**{card.number}
-    
-    **Биологические характеристики:** {show_characteristic(card.characteristics["biological_characteristics"])}
-    **Профессия:** {show_characteristic(card.characteristics["profession"])}
-    **Здоровье:** {show_characteristic(card.characteristics["health"])}
-    **Хобби:** {show_characteristic(card.characteristics["hobby"])}
-    **Фобия:** {show_characteristic(card.characteristics["phobia"])}
-    **Характер:** {show_characteristic(card.characteristics["character"])}
-    **Дополнительная информация:** {show_characteristic(card.characteristics["additional_information"])}
-    **Знания:** {show_characteristic(card.characteristics["knowledge"])}
-    **Багаж:** {show_characteristic(card.characteristics["baggage"])}
-    **Деятельность:** {show_characteristic(card.characteristics["action_card"])}
-    **Состояние:** {show_characteristic(card.characteristics["condition_card"])}
-    """
+**Карточка игрока номер:**{card.number}
+
+**Биологические характеристики:** {show_characteristic(card.characteristics["biological_characteristics"])}
+**Профессия:** {show_characteristic(card.characteristics["profession"])}
+**Здоровье:** {show_characteristic(card.characteristics["health"])}
+**Хобби:** {show_characteristic(card.characteristics["hobby"])}
+**Фобия:** {show_characteristic(card.characteristics["phobia"])}
+**Характер:** {show_characteristic(card.characteristics["character"])}
+**Дополнительная информация:** {show_characteristic(card.characteristics["additional_information"])}
+**Знания:** {show_characteristic(card.characteristics["knowledge"])}
+**Багаж:** {show_characteristic(card.characteristics["baggage"])}
+**Деятельность:** {show_characteristic(card.characteristics["action_card"])}
+**Состояние:** {show_characteristic(card.characteristics["condition_card"])}
+"""
     return text 
 
 def print_my_card(card: Card) -> str:
 
     text = f"""
-    **Карточка игрока номер:**{card.number}
+**Карточка игрока номер:**{card.number}
 
-    **Биологические характеристики:** {show_my_characteristic(card.characteristics["biological_characteristics"])}
-    **Профессия:** {show_my_characteristic(card.characteristics["profession"])}
-    **Здоровье:** {show_my_characteristic(card.characteristics["health"])}
-    **Хобби:** {show_my_characteristic(card.characteristics["hobby"])}
-    **Фобия:** {show_my_characteristic(card.characteristics["phobia"])}
-    **Характер:** {show_my_characteristic(card.characteristics["character"])}
-    **Дополнительная информация:** {show_my_characteristic(card.characteristics["additional_information"])}
-    **Знания:** {show_my_characteristic(card.characteristics["knowledge"])}
-    **Багаж:** {show_my_characteristic(card.characteristics["baggage"])}
-    **Деятельность:** {show_my_characteristic(card.characteristics["action_card"])}
-    **Состояние:** {show_my_characteristic(card.characteristics["condition_card"])}
-    """
+**Биологические характеристики:** __{show_my_characteristic(card.characteristics["biological_characteristics"])}__
+**Профессия:** __{show_my_characteristic(card.characteristics["profession"])}__
+**Здоровье:** __{show_my_characteristic(card.characteristics["health"])}__
+**Хобби:** __{show_my_characteristic(card.characteristics["hobby"])}__
+**Фобия:** __{show_my_characteristic(card.characteristics["phobia"])}__
+**Характер:** __{show_my_characteristic(card.characteristics["character"])}__
+**Дополнительная информация:** __{show_my_characteristic(card.characteristics["additional_information"])}__
+**Знания:** __{show_my_characteristic(card.characteristics["knowledge"])}__
+**Багаж:** __{show_my_characteristic(card.characteristics["baggage"])}__
+**Деятельность:** __{show_my_characteristic(card.characteristics["action_card"])}__
+**Состояние:** __{show_my_characteristic(card.characteristics["condition_card"])}__
+"""
 
     return text
         

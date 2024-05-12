@@ -31,3 +31,8 @@ async def get_all_waiting_rooms(query: CallbackQuery):
 @router.callback_query(F.data == "back_to_admin_panel")
 async def back_to_admin_panel(query: CallbackQuery):
     await query.message.edit_text(f"{query.message.from_user.full_name} wlelcome, to admin panel!", reply_markup=kb.admin_panel_kb)
+
+#<--photo_handlers-->
+@router.message(F.photo, F.from_user.id.in_(ADMINS_LIST))
+async def get_photo(message: Message):
+    await message.answer(f'ID фото: {message.photo[-1].file_id}')
