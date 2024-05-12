@@ -32,9 +32,7 @@ START_TEXT = """
 """
 
 
-
-
-#<--main commands-->
+# <--main commands-->
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await message.answer(START_TEXT, reply_markup=r.main_kb)
@@ -50,7 +48,7 @@ async def cmd_id(message: Message):
     await message.answer(f"id: {message.from_user.id}")
 
 
-#<--start_game handlers-->
+# <--start_game handlers-->
 @router.message(F.text == "🆕️начать новую игру")
 async def start_game(message: Message, state: FSMContext):
     await state.set_state(Game.configuration)
@@ -58,26 +56,29 @@ async def start_game(message: Message, state: FSMContext):
 
 
 @router.message(Game.configuration)
-async def game_configuration(message: Message, state: FSMContext,bot:Bot):
+async def game_configuration(message: Message, state: FSMContext, bot: Bot):
     global all_games, waiting_rooms
 
     if not message.text in all_games.keys():
-        all_games[message.text] = get_random_game(name = message.text)
-        all_games[message.text].add_card(get_random_card(0,message.from_user.id))
+        all_games[message.text] = get_random_game(name=message.text)
+        all_games[message.text].add_card(get_random_card(0, message.from_user.id))
 
-        await state.update_data(game_name = message.text)
-        
+        await state.update_data(game_name=message.text)
+
         await state.set_state(Game.waiting)
-        await message.answer("ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт", reply_markup=b.get_standart_kb("🚀старт"))
-        msg = await message.answer(f"пользователи в игре\n1-@{message.from_user.username}")
+        await message.answer(
+            "ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт",
+            reply_markup=b.get_standart_kb("🚀старт"),
+        )
+        msg = await message.answer(
+            f"пользователи в игре\n1-@{message.from_user.username}"
+        )
         waiting_rooms[message.text] = {message.from_user.id: msg.message_id}
 
         print(waiting_rooms)
 
-
     else:
         await message.answer(f"игра с таким названием уже существует")
-
 
 
 @router.message(F.text == "🎮присоединится к игре")
@@ -87,65 +88,93 @@ async def join_game(message: Message, state: FSMContext):
 
 
 @router.message(Game.join)
-async def joining_to_game(message: Message, state: FSMContext,bot:Bot):
+async def joining_to_game(message: Message, state: FSMContext, bot: Bot):
     global all_games, waiting_rooms
     if message.text in all_games.keys():
         game = all_games[message.text]
 
         if not game.started:
-            game.add_card(get_random_card(len(game.get_users_id()),message.from_user.id))
+            game.add_card(
+                get_random_card(len(game.get_users_id()), message.from_user.id)
+            )
 
-            await state.update_data(game_name = message.text)
+            await state.update_data(game_name=message.text)
             await state.set_state(Game.waiting)
-            await message.answer("вы ожидаете игроков в игре игра начнётся когда её создатель её  начнёт", reply_markup=r.rm_kb)
+            await message.answer(
+                "вы ожидаете игроков в игре игра начнётся когда её создатель её  начнёт",
+                reply_markup=r.rm_kb,
+            )
 
             print(game.get_users_id())
 
-            all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=user_id) for user_id in game.get_users_id()]
-            all_users_names = [member_data.user.username for member_data in all_users_member_data]
-            users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
+            all_users_member_data = [
+                await bot.get_chat_member(user_id=user_id, chat_id=user_id)
+                for user_id in game.get_users_id()
+            ]
+            all_users_names = [
+                member_data.user.username for member_data in all_users_member_data
+            ]
+            users = [
+                f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))
+            ]
 
             await message.answer("пользователи в игре\n" + "".join(users))
 
             for chat_id, message_id in waiting_rooms[message.text].items():
                 print(f"{chat_id}  " * 10)
-                await bot.edit_message_text(chat_id = chat_id,message_id=message_id, text = f"пользователи в игре\n" + "".join(users))
+                await bot.edit_message_text(
+                    chat_id=chat_id,
+                    message_id=message_id,
+                    text=f"пользователи в игре\n" + "".join(users),
+                )
             waiting_rooms[message.text][message.from_user.id] = message.message_id
 
         else:
             if message.from_user.id in game.get_users_id():
-                await state.update_data(game_name = message.text)
+                await state.update_data(game_name=message.text)
                 await state.set_state(Game.waiting)
-                await message.answer(f"вы вернулись в игру", reply_markup=b.get_standart_kb("🏁старт"))
+                await message.answer(
+                    f"вы вернулись в игру", reply_markup=b.get_standart_kb("🏁старт")
+                )
 
             else:
-                await message.answer(f"игра уже началась, вы не можите присоединиться к ней")
+                await message.answer(
+                    f"игра уже началась, вы не можите присоединиться к ней"
+                )
     else:
         await message.answer(f"игры с таким названием не существует")
 
 
-#<--waiting handlers-->
-        
+# <--waiting handlers-->
+
 
 @router.callback_query(Game.waiting, F.data == "update_users_list")
-async def update_users_list(query: CallbackQuery, state: FSMContext, bot:Bot):
+async def update_users_list(query: CallbackQuery, state: FSMContext, bot: Bot):
     global all_games
 
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    all_users_member_data = [await bot.get_chat_member(user_id=user_id, chat_id=user_id) for user_id in game.get_users_id()]
-    all_users_names = [member_data.user.username for member_data in all_users_member_data]
+    all_users_member_data = [
+        await bot.get_chat_member(user_id=user_id, chat_id=user_id)
+        for user_id in game.get_users_id()
+    ]
+    all_users_names = [
+        member_data.user.username for member_data in all_users_member_data
+    ]
     users = [f"{i+1}-@{all_users_names[i]}\n" for i in range(len(all_users_names))]
 
     try:
-        await query.message.edit_text("пользователи в игре\n" + "".join(users), reply_markup=i.update_users_list_kb)
+        await query.message.edit_text(
+            "пользователи в игре\n" + "".join(users),
+            reply_markup=i.update_users_list_kb,
+        )
         await query.answer()
     except:
         await query.answer()
 
 
-#TODO: #32940378
-#<--exception handlers--> не работают т.к в aiogram 3 хендлеры без сосотояния срабатывают на каждом состоянии
+# TODO: #32940378
+# <--exception handlers--> не работают т.к в aiogram 3 хендлеры без сосотояния срабатывают на каждом состоянии
 
 # @router.message()
 # async def mseesage_exception(message: Message):

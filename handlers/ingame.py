@@ -7,15 +7,14 @@ from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_
 from keyboards.reply import main_kb
 from keyboards.inline import back_kb
 
-from shelter_game.shelter_utils import  print_card, print_my_card
+from shelter_game.shelter_utils import print_card, print_my_card
 
 from handlers.start import all_games, waiting_rooms
 
 
 router = Router()
 
-#<--message handlers-->
-
+# <--message handlers-->
 
 
 @router.message(Game.waiting, F.text == "🚀старт")
@@ -27,7 +26,15 @@ async def game(message: Message, state: FSMContext, bot: Bot):
     game = all_games[game_name]
     del waiting_rooms[game_name]
     game.start()
-    [await bot.send_message(chat_id=chat_id, text = "вы можете нажать на кнопку 🏁старт для начала игры", reply_markup=get_standart_kb('🏁старт')) for chat_id in game.get_users_id()]
+    [
+        await bot.send_message(
+            chat_id=chat_id,
+            text="вы можете нажать на кнопку 🏁старт для начала игры",
+            reply_markup=get_standart_kb("🏁старт"),
+        )
+        for chat_id in game.get_users_id()
+    ]
+
 
 @router.message(Game.waiting, F.text == "🏁старт")
 async def start_game(message: Message, state: FSMContext):
@@ -37,8 +44,15 @@ async def start_game(message: Message, state: FSMContext):
 
     # photo = id all_cards.jpg
     photo = "AgACAgIAAxkBAAIdymY_eTqlGj4Ui6CAS2xVDPXf9Wc6AAKr1TEbsU4AAUqWEsXqcUEYDQEAAwIAA3gAAzUE"
-    await message.answer(text=f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры", reply_markup=get_standart_kb("⛔️выйти из игры"))
-    await message.answer_photo(photo = photo, caption ="карточки игроков", reply_markup=print_kards(game.get_cards()))
+    await message.answer(
+        text=f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры",
+        reply_markup=get_standart_kb("⛔️выйти из игры"),
+    )
+    await message.answer_photo(
+        photo=photo,
+        caption="карточки игроков",
+        reply_markup=print_kards(game.get_cards()),
+    )
     await state.set_state(Game.game)
 
 
@@ -48,30 +62,40 @@ async def leave_game(message: Message, state: FSMContext):
     await message.answer(f"вы вышли из игры", reply_markup=main_kb)
 
 
-#<--callback_query handlers-->
+# <--callback_query handlers-->
+
 
 @router.callback_query(Game.game, F.data.startswith("open_card_"))
 async def open_card(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    #22 - количество символов перед номером карточки в callback_data
-    card = game.cards[int(query.data[22:])-1]
+    # 22 - количество символов перед номером карточки в callback_data
+    card = game.cards[int(query.data[22:]) - 1]
 
-    #photo = id all_cards.jpg
+    # photo = id all_cards.jpg
     photo = "AgACAgIAAxkBAAId6GY_egN2p3_0A7sK3uhtDhOpAhkIAAIK3DEb2IT5SfTIS7cuEINQAQADAgADeAADNQQ"
     if card.user_id == query.from_user.id:
-        await query.message.edit_media(media = InputMediaPhoto(media=photo,
-                                                               caption = print_my_card(card),
-                                                               reply_markup=open_caracteristic_kb(card.get_closed_characteristic()),
-                                                               parse_mode="Markdown",),
-                                                               reply_markup=open_caracteristic_kb(card.get_closed_characteristic()))
+        await query.message.edit_media(
+            media=InputMediaPhoto(
+                media=photo,
+                caption=print_my_card(card),
+                reply_markup=open_caracteristic_kb(card.get_closed_characteristic()),
+                parse_mode="Markdown",
+            ),
+            reply_markup=open_caracteristic_kb(card.get_closed_characteristic()),
+        )
     else:
-        await query.message.edit_media(media = InputMediaPhoto(media=photo,
-                                                                caption = print_card(card),
-                                                                reply_markup=open_caracteristic_kb(card.get_closed_characteristic()),
-                                                                parse_mode="Markdown"),
-                                                                reply_markup=back_kb)
+        await query.message.edit_media(
+            media=InputMediaPhoto(
+                media=photo,
+                caption=print_card(card),
+                reply_markup=open_caracteristic_kb(card.get_closed_characteristic()),
+                parse_mode="Markdown",
+            ),
+            reply_markup=back_kb,
+        )
+
 
 @router.callback_query(Game.game, F.data.startswith("open_characteristic"))
 async def open_characteristic(query: CallbackQuery, state: FSMContext):
@@ -86,10 +110,12 @@ async def open_characteristic(query: CallbackQuery, state: FSMContext):
 
     if card.user_id == query.from_user.id:
         photo = "AgACAgIAAxkBAAId6GY_egN2p3_0A7sK3uhtDhOpAhkIAAIK3DEb2IT5SfTIS7cuEINQAQADAgADeAADNQQ"
-        await query.message.edit_media(InputMediaPhoto(media= photo,
-                                                       caption = print_my_card(card),
-                                                       parse_mode="Markdown"),
-                                                       reply_markup=open_caracteristic_kb(card.get_closed_characteristic()))
+        await query.message.edit_media(
+            InputMediaPhoto(
+                media=photo, caption=print_my_card(card), parse_mode="Markdown"
+            ),
+            reply_markup=open_caracteristic_kb(card.get_closed_characteristic()),
+        )
 
 
 @router.callback_query(Game.game, F.data == "back_to_card_list")
@@ -98,6 +124,10 @@ async def back_to_card_list(query: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     game = all_games[data["game_name"]]
     photo = "AgACAgIAAxkBAAIdymY_eTqlGj4Ui6CAS2xVDPXf9Wc6AAKr1TEbsU4AAUqWEsXqcUEYDQEAAwIAA3gAAzUE"
-    await query.message.edit_media(InputMediaPhoto(media = photo,
-                                                   caption = "карточки игроков",),
-                                                   reply_markup=print_kards(game.get_cards()))
+    await query.message.edit_media(
+        InputMediaPhoto(
+            media=photo,
+            caption="карточки игроков",
+        ),
+        reply_markup=print_kards(game.get_cards()),
+    )
