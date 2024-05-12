@@ -16,7 +16,7 @@ router = Router()
 @router.message(Command("admin"), F.from_user.id.in_(ADMINS_LIST))
 async def cmd_admin(message: Message):
     await message.answer(
-        f"{message.from_user.full_name} wlelcome, to admin panel!",
+        f"{message.from_user.full_name} welcome, to admin panel!",
         reply_markup=kb.admin_panel_kb,
     )
 

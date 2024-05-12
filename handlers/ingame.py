@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from game_states import Game
 from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_kb
 from keyboards.reply import main_kb
-from keyboards.inline import back_kb
+from keyboards.inline import back_kb, start_game_kb
 
 from shelter_game.shelter_utils import print_card, print_my_card
 
@@ -32,30 +32,10 @@ async def game(message: Message, state: FSMContext, bot: Bot):
         await bot.send_message(
             chat_id=chat_id,
             text="вы можете нажать на кнопку 🏁старт для начала игры",
-            reply_markup=get_standart_kb("🏁старт"),
+            reply_markup=start_game_kb,
         )
         for chat_id in game.get_users_id()
     ]
-
-
-@router.message(Game.waiting, F.text == "🏁старт")
-async def start_game(message: Message, state: FSMContext):
-    global all_games
-    data = await state.get_data()
-    game = all_games[data["game_name"]]
-
-    # photo = id all_cards.jpg
-    photo = ALL_PLAYERS_IMG
-    await message.answer(
-        text=f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры",
-        reply_markup=get_standart_kb("⛔️выйти из игры"),
-    )
-    await message.answer_photo(
-        photo=photo,
-        caption="карточки игроков",
-        reply_markup=print_kards(game.get_cards()),
-    )
-    await state.set_state(Game.game)
 
 
 @router.message(Game.game, F.text == "⛔️выйти из игры")
@@ -65,6 +45,27 @@ async def leave_game(message: Message, state: FSMContext):
 
 
 # <--callback_query handlers-->
+    
+@router.callback_query(Game.waiting, F.data == "start_game")
+async def start_game(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+
+    # photo = id all_cards.jpg
+    photo = ALL_PLAYERS_IMG
+    await query.message.answer(
+        text=f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры",
+        reply_markup=get_standart_kb("⛔️выйти из игры"),
+    )
+    await query.message.answer_photo(
+        photo=photo,
+        caption="карточки игроков",
+        reply_markup=print_kards(game.get_cards()),
+    )
+    await state.set_state(Game.game)
+    await query.answer("игра началась")
+    await query.message.delete()
 
 
 @router.callback_query(Game.game, F.data.startswith("open_card_"))
