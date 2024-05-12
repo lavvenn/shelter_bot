@@ -16,53 +16,65 @@ def _get_random_bio_characteristics() -> str:
         return f"мужчина {age} лет, {orientation}"
     if gender == "женщина":
         ret_str = f"женщина {age} лет, {orientation}"
-        if random.randint(0,100) >= 50:
+        if random.randint(0, 100) >= 50:
             ret_str += " беременная"
-        return ret_str 
+        return ret_str
     else:
         return str(ret_str)
-    
 
-def get_random_card(card_numder: int, user_id: int)-> Card:
-     return Card(
+
+def get_random_card(card_numder: int, user_id: int) -> Card:
+    return Card(
         user_id=user_id,
         number=card_numder,
         profession=[random.choice(characteristics.professions), False],
-        bio_characteristics= [_get_random_bio_characteristics(), False],
+        bio_characteristics=[_get_random_bio_characteristics(), False],
         health=[random.choice(characteristics.health), False],
         hobby=[random.choice(characteristics.hobbies), False],
         phobia=[random.choice(characteristics.phobias), False],
         character=[random.choice(characteristics.character), False],
-        additional_information=[random.choice(characteristics.additional_information), False],
+        additional_information=[
+            random.choice(characteristics.additional_information),
+            False,
+        ],
         knowledge=[random.choice(characteristics.knowledge), False],
         baggage=[random.choice(characteristics.baggages), False],
         action_card=["чтото", False],
-        condition_card=["чтото", False]
+        condition_card=["чтото", False],
     )
 
 
-def _get_random_shelter() -> Shelter:  
+def _get_random_shelter() -> Shelter:
     shelter_name = random.choice(list(shelters.shelters_dict.keys()))
     shelter_discription = shelters.shelters_dict[shelter_name]
     rooms = random.choice(shelters.rooms_list)
-    number_of_items = random.randint(1,4)
+    number_of_items = random.randint(1, 4)
     items = [random.choice(shelters.items) for _ in range(number_of_items)]
     size = f"{random.randint(100,550)} m²"
     time = f"{random.randint(1,5)} лет"
 
-    return Shelter(name=shelter_name, description=shelter_discription, rooms=rooms, loot=items, size=size, time=time)
+    return Shelter(
+        name=shelter_name,
+        description=shelter_discription,
+        rooms=rooms,
+        loot=items,
+        size=size,
+        time=time,
+    )
 
 
 def _get_random_catastrophe() -> Catastrophe:
     catastrophe_name = random.choice(list(shelters.catastrophes.keys()))
 
-    return Catastrophe(name=catastrophe_name, description=shelters.catastrophes[catastrophe_name])
+    return Catastrophe(
+        name=catastrophe_name, description=shelters.catastrophes[catastrophe_name]
+    )
 
 
 def get_random_game(name: str) -> Game:
 
     catastrophe = _get_random_catastrophe()
-    
+
     shelter = _get_random_shelter()
 
     return Game(name=name, catastrophe=catastrophe, shelter=shelter)
@@ -73,16 +85,22 @@ def show_characteristic(characteristic: list) -> str:
         return characteristic[0]
     else:
         return "######"
-    
+
+
 def show_my_characteristic(characteristic: list) -> str:
     if characteristic[1] == True:
         return f"{characteristic[0]}🟢"
     else:
         return f"{characteristic[0]}🔴"
 
-def print_card(card: Card)-> str:
 
-    characteristics_list = [characteric[0] for characteric in card.get_all_characteristics().values() if characteric[1] == True ]
+def print_card(card: Card) -> str:
+
+    characteristics_list = [
+        characteric[0]
+        for characteric in card.get_all_characteristics().values()
+        if characteric[1] == True
+    ]
 
     text = f"""
 **Карточка игрока номер:**{card.number}
@@ -99,7 +117,8 @@ def print_card(card: Card)-> str:
 **Деятельность:** {show_characteristic(card.characteristics["action_card"])}
 **Состояние:** {show_characteristic(card.characteristics["condition_card"])}
 """
-    return text 
+    return text
+
 
 def print_my_card(card: Card) -> str:
 
@@ -120,4 +139,3 @@ def print_my_card(card: Card) -> str:
 """
 
     return text
-        
