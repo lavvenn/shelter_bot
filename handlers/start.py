@@ -75,7 +75,6 @@ async def game_configuration(message: Message, state: FSMContext, bot: Bot):
         )
         waiting_rooms[message.text] = {message.from_user.id: msg.message_id}
 
-        print(waiting_rooms)
 
     else:
         await message.answer(f"игра с таким названием уже существует")

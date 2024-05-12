@@ -35,8 +35,6 @@ class Card:
             "condition_card": condition_card
         }
 
-        print(self.characteristics)
-        print(hobby)
 
         self.online = True
 
@@ -129,8 +127,7 @@ class Game:
 
     def get_card_by_user_id(self, user_id: int)->Card:
         for card in self.cards:
-            print(self.cards, card.user_id, user_id)
             if card.user_id == user_id:
                 return card
         else:
-            return "нет такой карточки"
+            return "нет карты у пользователя с таким id"

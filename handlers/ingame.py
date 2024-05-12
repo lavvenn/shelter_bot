@@ -11,6 +11,8 @@ from shelter_game.shelter_utils import print_card, print_my_card
 
 from handlers.start import all_games, waiting_rooms
 
+from config import ALL_PLAYERS_IMG, PLAYER_CARD_IMG
+
 
 router = Router()
 
@@ -43,7 +45,7 @@ async def start_game(message: Message, state: FSMContext):
     game = all_games[data["game_name"]]
 
     # photo = id all_cards.jpg
-    photo = "AgACAgIAAxkBAAIdymY_eTqlGj4Ui6CAS2xVDPXf9Wc6AAKr1TEbsU4AAUqWEsXqcUEYDQEAAwIAA3gAAzUE"
+    photo = ALL_PLAYERS_IMG
     await message.answer(
         text=f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры",
         reply_markup=get_standart_kb("⛔️выйти из игры"),
@@ -74,7 +76,7 @@ async def open_card(query: CallbackQuery, state: FSMContext):
     card = game.cards[int(query.data[22:]) - 1]
 
     # photo = id all_cards.jpg
-    photo = "AgACAgIAAxkBAAId6GY_egN2p3_0A7sK3uhtDhOpAhkIAAIK3DEb2IT5SfTIS7cuEINQAQADAgADeAADNQQ"
+    photo = PLAYER_CARD_IMG
     if card.user_id == query.from_user.id:
         await query.message.edit_media(
             media=InputMediaPhoto(
@@ -103,13 +105,12 @@ async def open_characteristic(query: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     game = all_games[data["game_name"]]
     card = game.get_card_by_user_id(query.from_user.id)
-    print(card)
     card_index = game.cards.index(card)
 
     all_games[data["game_name"]].cards[card_index].open_characteristic(query.data[20:])
 
     if card.user_id == query.from_user.id:
-        photo = "AgACAgIAAxkBAAId6GY_egN2p3_0A7sK3uhtDhOpAhkIAAIK3DEb2IT5SfTIS7cuEINQAQADAgADeAADNQQ"
+        photo = PLAYER_CARD_IMG
         await query.message.edit_media(
             InputMediaPhoto(
                 media=photo, caption=print_my_card(card), parse_mode="Markdown"
@@ -123,7 +124,7 @@ async def back_to_card_list(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    photo = "AgACAgIAAxkBAAIdymY_eTqlGj4Ui6CAS2xVDPXf9Wc6AAKr1TEbsU4AAUqWEsXqcUEYDQEAAwIAA3gAAzUE"
+    photo = ALL_PLAYERS_IMG
     await query.message.edit_media(
         InputMediaPhoto(
             media=photo,
