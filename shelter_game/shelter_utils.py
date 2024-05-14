@@ -54,10 +54,10 @@ def _get_random_shelter() -> Shelter:
     shelter_name = random.choice(list(shelters["shelters_dict"].keys()))
     shelter_discription = shelters["shelters_dict"][shelter_name]
     rooms = random.choice(shelters["rooms_list"])
-    number_of_items = random.randint(5, 15)
+    number_of_items = random.randint(1, 5)
     items = [random.choice(shelters["items"]) for _ in range(number_of_items)]
     size = f"{random.randint(100,550)} m²"
-    time = f"{random.randint(1,5)} лет"
+    time = f"{random.randint(5,15)} лет"
 
     return Shelter(
         name=shelter_name,
@@ -112,15 +112,25 @@ def print_card(card: Card) -> str:
 **Карточка игрока номер:**{card.number}
 
 **Биологические характеристики:** {show_characteristic(card.characteristics["biological_characteristics"])}
+
 **Профессия:** {show_characteristic(card.characteristics["profession"])}
+
 **Здоровье:** {show_characteristic(card.characteristics["health"])}
+
 **Хобби:** {show_characteristic(card.characteristics["hobby"])}
+
 **Фобия:** {show_characteristic(card.characteristics["phobia"])}
+
 **Характер:** {show_characteristic(card.characteristics["character"])}
+
 **Дополнительная информация:** {show_characteristic(card.characteristics["additional_information"])}
+
 **Знания:** {show_characteristic(card.characteristics["knowledge"])}
+
 **Багаж:** {show_characteristic(card.characteristics["baggage"])}
+
 **Деятельность:** {show_characteristic(card.characteristics["action_card"])}
+
 **Состояние:** {show_characteristic(card.characteristics["condition_card"])}
 """
     return text
@@ -132,15 +142,25 @@ def print_my_card(card: Card) -> str:
 **Карточка игрока номер:**{card.number}
 
 **Биологические характеристики:** __{show_my_characteristic(card.characteristics["biological_characteristics"])}__
+
 **Профессия:** __{show_my_characteristic(card.characteristics["profession"])}__
+
 **Здоровье:** __{show_my_characteristic(card.characteristics["health"])}__
+
 **Хобби:** __{show_my_characteristic(card.characteristics["hobby"])}__
+
 **Фобия:** __{show_my_characteristic(card.characteristics["phobia"])}__
+
 **Характер:** __{show_my_characteristic(card.characteristics["character"])}__
+
 **Дополнительная информация:** __{show_my_characteristic(card.characteristics["additional_information"])}__
+
 **Знания:** __{show_my_characteristic(card.characteristics["knowledge"])}__
+
 **Багаж:** __{show_my_characteristic(card.characteristics["baggage"])}__
+
 **Деятельность:** __{show_my_characteristic(card.characteristics["action_card"])}__
+
 **Состояние:** __{show_my_characteristic(card.characteristics["condition_card"])}__
 """
 
@@ -151,8 +171,11 @@ def print_shelter(shelter: Shelter) -> str:
 **Название бункера:** {shelter.name}
 
 **Описание:** {shelter.description}
+
 **Комнаты:** {shelter.rooms}
+
 **Предметы:** {shelter.loot}
+
 **Размер:** {shelter.size}
 **Время:** {shelter.time}
 """
