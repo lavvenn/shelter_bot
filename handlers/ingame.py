@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from game_states import Game
 from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_kb
 from keyboards.reply import main_kb
-from keyboards.inline import back_kb, start_game_kb
+from keyboards.inline import back_kb, join_game_kb
 
 from shelter_game.shelter_utils import print_card, print_my_card
 
@@ -18,24 +18,9 @@ router = Router()
 
 # <--message handlers-->
 
-
-@router.message(Game.waiting, F.text == "🚀старт")
-async def game(message: Message, state: FSMContext, bot: Bot):
-    global all_games, waiting_rooms
-
-    data = await state.get_data()
-    game_name = data["game_name"]
-    game = all_games[game_name]
-    del waiting_rooms[game_name]
-    game.start()
-    [
-        await bot.send_message(
-            chat_id=chat_id,
-            text="вы можете нажать на кнопку 🏁старт для начала игры",
-            reply_markup=start_game_kb,
-        )
-        for chat_id in game.get_users_id()
-    ]
+@router.message(Game.waiting)
+async def waiting_exeption(message: Message):
+    await message.answer("ожидайте присоединения к игре других игроков и начачала игры")
 
 
 @router.message(Game.game, F.text == "⛔️выйти из игры")
@@ -47,6 +32,27 @@ async def leave_game(message: Message, state: FSMContext):
 # <--callback_query handlers-->
     
 @router.callback_query(Game.waiting, F.data == "start_game")
+async def game(query: CallbackQuery, state: FSMContext, bot: Bot):
+    global all_games, waiting_rooms
+
+    data = await state.get_data()
+    game_name = data["game_name"]
+    game = all_games[game_name]
+    del waiting_rooms[game_name]
+    game.start()
+    await query.message.delete()
+    await query.answer("игра началась")
+    [
+        await bot.send_message(
+            chat_id=chat_id,
+            text="вы можете нажать на кнопку 🏁старт для начала игры",
+            reply_markup=join_game_kb,
+        )
+        for chat_id in game.get_users_id()
+    ]
+
+    
+@router.callback_query(Game.waiting, F.data == "join_game")
 async def start_game(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()

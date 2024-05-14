@@ -67,8 +67,8 @@ async def game_configuration(message: Message, state: FSMContext, bot: Bot):
 
         await state.set_state(Game.waiting)
         await message.answer(
-            "ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можите нажать 🚀старт",
-            reply_markup=b.get_standart_kb("🚀старт"),
+            "ожидайте присоединения к игре других игроков\n если набралось необходимимое количество игроков можете нажать 🚀старт",
+            reply_markup=i.start_game_kb,
         )
         msg = await message.answer(
             f"пользователи в игре\n1-@{message.from_user.username}"
@@ -133,7 +133,7 @@ async def joining_to_game(message: Message, state: FSMContext, bot: Bot):
                 await state.update_data(game_name=message.text)
                 await state.set_state(Game.waiting)
                 await message.answer(
-                    f"вы вернулись в игру", reply_markup=i.start_game_kb
+                    f"вы вернулись в игру", reply_markup=i.join_game_kb
                 )
 
             else:

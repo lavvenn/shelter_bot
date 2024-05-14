@@ -5,7 +5,11 @@ back_kb = InlineKeyboardMarkup(inline_keyboard=[
 ])
 
 start_game_kb = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text = "🏁старт", callback_data="start_game")]
+    [InlineKeyboardButton(text = "🚀старт", callback_data="start_game")]
+])
+
+join_game_kb = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text = "🏁старт", callback_data="join_game")]
 ])
 
 # update_users_list_kb = InlineKeyboardMarkup(inline_keyboard=[
