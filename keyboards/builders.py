@@ -29,6 +29,7 @@ def translate_characteristic(characteristic: str) -> str:
     else:
         return "нет такой характеристики"
 
+
 def get_standart_kb(buttons: str | list[str]) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     if type(buttons) == str:
@@ -37,11 +38,15 @@ def get_standart_kb(buttons: str | list[str]) -> ReplyKeyboardMarkup:
         [builder.button(text = button) for button in buttons]
     return builder.as_markup(resize_keyboard=True)
 
+
 def print_kards(cards: list)->InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     [builder.row(InlineKeyboardButton(text=f"<--{card}-->", callback_data=f"open_card_{card}")) for card in cards]
+    builder.row(InlineKeyboardButton(text="☢️бункер", callback_data="show_shelter"))
+    builder.add(InlineKeyboardButton(text="💥катастрофа", callback_data="show_catastrophe"))
     # [builder.row(text=f"<--{card}-->", callback_data=f"open{card}") for card in cards]
     return builder.as_markup(resize_keyboard=True)
+
 
 def open_caracteristic_kb(closed_characteristic: list[str]) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()

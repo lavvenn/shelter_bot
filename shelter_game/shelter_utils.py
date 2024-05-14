@@ -16,7 +16,7 @@ with open("shelter_game/characteristics.json") as c, open("shelter_game/shelters
 def _get_random_bio_characteristics() -> str:
     age = random.randint(18, 80)
     gender = random.choice(["мужчина", "женщина"])
-    orientation = random.choice(["гетеро", "гомо", "би", "asexual"])
+    orientation = random.choice(["гетеро", "гомо", "би", "асексуал"])
 
     if gender == "мужчина":
         return f"мужчина {age} лет, {orientation}"
@@ -54,7 +54,7 @@ def _get_random_shelter() -> Shelter:
     shelter_name = random.choice(list(shelters["shelters_dict"].keys()))
     shelter_discription = shelters["shelters_dict"][shelter_name]
     rooms = random.choice(shelters["rooms_list"])
-    number_of_items = random.randint(1, 4)
+    number_of_items = random.randint(5, 15)
     items = [random.choice(shelters["items"]) for _ in range(number_of_items)]
     size = f"{random.randint(100,550)} m²"
     time = f"{random.randint(1,5)} лет"
@@ -144,4 +144,24 @@ def print_my_card(card: Card) -> str:
 **Состояние:** __{show_my_characteristic(card.characteristics["condition_card"])}__
 """
 
+    return text
+
+def print_shelter(shelter: Shelter) -> str:
+    text = f"""
+**Название бункера:** {shelter.name}
+
+**Описание:** {shelter.description}
+**Комнаты:** {shelter.rooms}
+**Предметы:** {shelter.loot}
+**Размер:** {shelter.size}
+**Время:** {shelter.time}
+"""
+    return text
+
+def print_catastrophe(catastrophe: Catastrophe) -> str:
+    text = f"""
+**катастрофа:** {catastrophe.name}
+
+**Описание:** {catastrophe.description}
+"""
     return text

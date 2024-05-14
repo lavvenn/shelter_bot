@@ -7,11 +7,11 @@ from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_
 from keyboards.reply import main_kb
 from keyboards.inline import back_kb, join_game_kb
 
-from shelter_game.shelter_utils import print_card, print_my_card
+from shelter_game.shelter_utils import print_card, print_my_card, print_shelter, print_catastrophe
 
 from handlers.start import all_games, waiting_rooms
 
-from config import ALL_PLAYERS_IMG, PLAYER_CARD_IMG
+from config import ALL_PLAYERS_IMG, PLAYER_CARD_IMG, SHELTER_IMG, CATASTROPHE_IMG
 
 
 router = Router()
@@ -139,3 +139,34 @@ async def back_to_card_list(query: CallbackQuery, state: FSMContext):
         ),
         reply_markup=print_kards(game.get_cards()),
     )
+
+
+@router.callback_query(Game.game, F.data == "show_shelter")
+async def show_shelter(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    photo = SHELTER_IMG
+    await query.message.edit_media(
+        InputMediaPhoto(
+            media=photo,
+            caption=print_shelter(game.shelter),
+            parse_mode="Markdown",
+        ),
+        reply_markup=back_kb,
+    )
+
+@router.callback_query(Game.game, F.data == "show_catastrophe")
+async def show_catastrophe(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    photo = CATASTROPHE_IMG
+    await query.message.edit_media(
+        InputMediaPhoto(
+            media=photo,
+            caption=print_catastrophe(game.catastrophe),
+            parse_mode="Markdown",
+        ),
+        reply_markup=back_kb,
+    )        
