@@ -1,10 +1,16 @@
 import random
 import string
+import json
 
-import shelter_game.characteristics as characteristics
-import shelter_game.shelters as shelters
+
 
 from shelter_game.shelter import *
+
+with open("shelter_game/characteristics.json") as c, open("shelter_game/shelters.json") as s:
+    characteristics = json.load(c)
+    shelters = json.load(s)
+
+
 
 
 def _get_random_bio_characteristics() -> str:
@@ -27,29 +33,29 @@ def get_random_card(card_numder: int, user_id: int) -> Card:
     return Card(
         user_id=user_id,
         number=card_numder,
-        profession=[random.choice(characteristics.professions), False],
+        profession=[random.choice(characteristics["professions"]), False],
         bio_characteristics=[_get_random_bio_characteristics(), False],
-        health=[random.choice(characteristics.health), False],
-        hobby=[random.choice(characteristics.hobbies), False],
-        phobia=[random.choice(characteristics.phobias), False],
-        character=[random.choice(characteristics.character), False],
+        health=[random.choice(characteristics["health"]), False],
+        hobby=[random.choice(characteristics["hobbies"]), False],
+        phobia=[random.choice(characteristics["phobias"]), False],
+        character=[random.choice(characteristics["character"]), False],
         additional_information=[
-            random.choice(characteristics.additional_information),
+            random.choice(characteristics["additional_information"]),
             False,
         ],
-        knowledge=[random.choice(characteristics.knowledge), False],
-        baggage=[random.choice(characteristics.baggages), False],
+        knowledge=[random.choice(characteristics["knowledge"]), False],
+        baggage=[random.choice(characteristics["baggages"]), False],
         action_card=["чтото", False],
         condition_card=["чтото", False],
     )
 
 
 def _get_random_shelter() -> Shelter:
-    shelter_name = random.choice(list(shelters.shelters_dict.keys()))
-    shelter_discription = shelters.shelters_dict[shelter_name]
-    rooms = random.choice(shelters.rooms_list)
+    shelter_name = random.choice(list(shelters["shelters_dict"].keys()))
+    shelter_discription = shelters["shelters_dict"][shelter_name]
+    rooms = random.choice(shelters["rooms_list"])
     number_of_items = random.randint(1, 4)
-    items = [random.choice(shelters.items) for _ in range(number_of_items)]
+    items = [random.choice(shelters["items"]) for _ in range(number_of_items)]
     size = f"{random.randint(100,550)} m²"
     time = f"{random.randint(1,5)} лет"
 
@@ -64,10 +70,10 @@ def _get_random_shelter() -> Shelter:
 
 
 def _get_random_catastrophe() -> Catastrophe:
-    catastrophe_name = random.choice(list(shelters.catastrophes.keys()))
+    catastrophe_name = random.choice(list(shelters["catastrophes"].keys()))
 
     return Catastrophe(
-        name=catastrophe_name, description=shelters.catastrophes[catastrophe_name]
+        name=catastrophe_name, description=shelters["catastrophes"][catastrophe_name]
     )
 
 
