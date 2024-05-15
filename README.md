@@ -48,13 +48,13 @@
 ### Запуск
 
 Для запуска бота выполните команду:
-    ```bash
-    python run.py
-    ```
+```bash
+python run.py
+```
 
 ### Структура проекта
 
-plaintext
+```bash
 
 shelter_bot/
 ├── handlers/              # Модули обработчиков
@@ -85,3 +85,4 @@ shelter_bot/
 ├── genirate_shelters.py    # Скрипт генерации убежищ
 ├── README.md
 └── run.py                  # Главный файл для запуска бота
+```
