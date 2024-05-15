@@ -1,13 +1,86 @@
-# Бункер бот
+# Shelter Bot
 
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aiogram?style=for-the-badge)](https://pypi.org/project/aiogram/)
-[![Pypi Downloads](https://img.shields.io/pypi/dm/aiogram?style=for-the-badge)](https://pypistats.org/packages/aiogram)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aiogram/aiogram/Test?label=Tests&style=for-the-badge)](https://github.com/aiogram/aiogram/actions)
-[![Telegram Chat](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Ftg.sumanj.dev%2Faiogram)](https://t.me/aiogramsupport)
+![Shelter](img/shelter.jpg)
 
-<img src="https://telegra.ph/file/e275011f9a8726416ed51.png" alt="Logo" width="200" height="200" align="right" />
+## Описание
 
-## Введение
+**Shelter Bot** — это Telegram бот, который переносит популярную настольную игру "Бункер" в формат Telegram. Используя фреймворк [aiogram](https://docs.aiogram.dev/en/latest/), бот позволяет пользователям играть в игру "Бункер" прямо в мессенджере.
 
-Бункер бот - это Telegram бот, который реализует популярную настольную игру "Бункер". Он написан на Python с использованием фреймворка aiogram. В этой секции мы расскажем вам о том, какой подход мы применили к созданию бота и какие инструмены и библиотеки мы использовали.
+## Возможности
 
+- Создание и управление игрой "Бункер" в Telegram
+- Поддержка различных игровых команд
+- Гибкая настройка и конфигурация
+
+## Установка и настройка
+
+### Требования
+
+- Python 3.7+
+- Библиотека aiogram
+
+### Установка
+
+1. Склонируйте репозиторий:
+    ```bash
+    git clone https://github.com/yourusername/shelter_bot.git
+    cd shelter_bot
+    ```
+
+2. Создайте виртуальное окружение и активируйте его:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # Для Windows: venv\Scripts\activate
+    ```
+
+3. Установите зависимости:
+    ```bash
+    pip install aiogram
+    ```
+
+4. Скопируйте файл конфигурации и отредактируйте его:
+    ```bash
+    cp config_example.py config.py
+    ```
+
+5. В файле `config.py` укажите токен вашего Telegram бота и другие необходимые параметры.
+
+### Запуск
+
+Для запуска бота выполните команду:
+```bash
+python run.py
+
+Структура проекта
+
+plaintext
+
+shelter_bot/
+├── handlers/              # Модули обработчиков
+│   ├── admin.py
+│   ├── ingame.py
+│   └── start.py
+├── img/                   # Изображения для бота
+│   ├── all_cards.jpg
+│   ├── catastrophe.jpg
+│   ├── player_card.jpg
+│   └── shelter.jpg
+├── keyboards/             # Клавиатуры для взаимодействия с пользователем
+│   ├── admin_kb.py
+│   ├── builders.py
+│   ├── inline.py
+│   └── reply.py
+├── shelter_game/          # Логика игры
+│   ├── characteristics.json
+│   ├── shelter_utils.py
+│   ├── shelter.py
+│   ├── shelters.json
+│   └── test.py
+├── .gitignore
+├── Бункер_Правила.pdf      # Правила игры "Бункер"
+├── config_example.py       # Пример конфигурационного файла
+├── config.py               # Конфигурационный файл (создается пользователем)
+├── game_states.py          # Состояния игры
+├── genirate_shelters.py    # Скрипт генерации убежищ
+├── README.md
+└── run.py                  # Главный файл для запуска бота
