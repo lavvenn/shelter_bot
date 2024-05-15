@@ -41,7 +41,7 @@ def get_standart_kb(buttons: str | list[str]) -> ReplyKeyboardMarkup:
 
 def print_kards(cards: list)->InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    [builder.row(InlineKeyboardButton(text=f"<--{card}-->", callback_data=f"open_card_{card}")) for card in cards]
+    [builder.row(InlineKeyboardButton(text=f"🃏{card.number}.{card.name}", callback_data=f"open_card_{card}")) for card in cards]
     builder.row(InlineKeyboardButton(text="☢️бункер", callback_data="show_shelter"))
     builder.add(InlineKeyboardButton(text="💥катастрофа", callback_data="show_catastrophe"))
     # [builder.row(text=f"<--{card}-->", callback_data=f"open{card}") for card in cards]

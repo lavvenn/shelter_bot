@@ -9,6 +9,7 @@ class Card:
         self,
         user_id: int,
         number: int,
+        name: str,
         profession: list[list[str, bool]],
         bio_characteristics: list[list[str, bool]],
         health: list[list[str, bool]],
@@ -23,6 +24,8 @@ class Card:
     ):
         self.user_id = user_id
         self.number = number + 1
+
+        self.name = name
 
         self.characteristics = {
             "profession": profession,

@@ -66,7 +66,6 @@ async def start_game(query: CallbackQuery, state: FSMContext):
     )
     await query.message.answer_photo(
         photo=photo,
-        caption="карточки игроков",
         reply_markup=print_kards(game.get_cards()),
     )
     await state.set_state(Game.game)
@@ -135,7 +134,6 @@ async def back_to_card_list(query: CallbackQuery, state: FSMContext):
     await query.message.edit_media(
         InputMediaPhoto(
             media=photo,
-            caption="карточки игроков",
         ),
         reply_markup=print_kards(game.get_cards()),
     )

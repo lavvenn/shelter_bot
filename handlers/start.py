@@ -66,7 +66,7 @@ async def game_configuration(message: Message, state: FSMContext, bot: Bot):
 
     if not message.text in all_games.keys():
         all_games[message.text] = get_random_game(name=message.text)
-        all_games[message.text].add_card(get_random_card(0, message.from_user.id))
+        all_games[message.text].add_card(get_random_card(0, message.from_user.id, message.from_user.full_name))
 
         await state.update_data(game_name=message.text)
 
@@ -99,7 +99,7 @@ async def joining_to_game(message: Message, state: FSMContext, bot: Bot):
 
         if not game.started:
             game.add_card(
-                get_random_card(len(game.get_users_id()), message.from_user.id)
+                get_random_card(len(game.get_users_id()), message.from_user.id, message.from_user.full_name)
             )
 
             await state.update_data(game_name=message.text)

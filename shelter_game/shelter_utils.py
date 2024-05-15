@@ -29,10 +29,11 @@ def _get_random_bio_characteristics() -> str:
         return str(ret_str)
 
 
-def get_random_card(card_numder: int, user_id: int) -> Card:
+def get_random_card(card_numder: int, user_id: int, user_name: str) -> Card:
     return Card(
         user_id=user_id,
         number=card_numder,
+        name=user_name,
         profession=[random.choice(characteristics["professions"]), False],
         bio_characteristics=[_get_random_bio_characteristics(), False],
         health=[random.choice(characteristics["health"]), False],
