@@ -8,6 +8,8 @@ from handlers.start import all_games, waiting_rooms
 
 from keyboards import admin_kb as kb
 
+from shelter_game.shelter_utils import get_random_game, get_random_card
+
 
 router = Router()
 
@@ -42,6 +44,22 @@ async def back_to_admin_panel(query: CallbackQuery):
         f"{query.message.from_user.full_name} wlelcome, to admin panel!",
         reply_markup=kb.admin_panel_kb,
     )
+
+
+@router.callback_query(F.data == "create_test_game")
+async def create_test_game(query: CallbackQuery):
+    global all_games
+
+    all_games["test5"] = get_random_game(name="test5")
+    game = all_games["test5"]
+
+    [game.add_card(get_random_card(i, i)) for i in range(4)] # from 0 to 3
+    
+    game.add_card(get_random_card(4, query.from_user.id))
+
+    game.start()
+
+    await query.answer("игра создана")
 
 
 # <--photo_handlers-->

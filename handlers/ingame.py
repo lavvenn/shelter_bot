@@ -61,7 +61,7 @@ async def start_game(query: CallbackQuery, state: FSMContext):
     # photo = id all_cards.jpg
     photo = ALL_PLAYERS_IMG
     await query.message.answer(
-        text=f"вы можите выйти из игры нажав кнопку ⛔️выйти из игры",
+        text=f"вы можeте выйти из игры нажав кнопку ⛔️выйти из игры",
         reply_markup=get_standart_kb("⛔️выйти из игры"),
     )
     await query.message.answer_photo(
