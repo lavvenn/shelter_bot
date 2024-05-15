@@ -1,6 +1,6 @@
 # Shelter Bot
 
-![Shelter](img/shelter.jpg = 100x100)
+![Shelter](img/shelter.jpg)
 
 ## Описание
 
