@@ -54,6 +54,7 @@
 
 ### Структура проекта
 
+plaintext
 
 shelter_bot/
 ├── handlers/              # Модули обработчиков
