@@ -64,5 +64,10 @@ async def create_test_game(query: CallbackQuery):
 
 # <--photo_handlers-->
 @router.message(F.photo, F.from_user.id.in_(ADMINS_LIST))
-async def get_photo(message: Message):
+async def get_photo_id(message: Message):
     await message.answer(f"ID фото: {message.photo[-1].file_id}")
+
+#<--file_handlers-->
+@router.message(F.document, F.from_user.id.in_(ADMINS_LIST))
+async def get_file_id(message: Message):
+    await message.answer(f"ID файла: {message.document.file_id}")

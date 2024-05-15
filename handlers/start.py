@@ -1,11 +1,14 @@
 from aiogram import Router, F, Bot
 from aiogram.filters.command import Command, CommandStart
 from aiogram.types import Message, CallbackQuery
+from aiogram.types.input_file import FSInputFile
 from aiogram.fsm.context import FSMContext
 
 from game_states import Game
 
 from shelter_game.shelter_utils import get_random_game, get_random_card
+
+from config import GAME_RULES
 
 from keyboards import builders as b
 from keyboards import reply as r
@@ -40,7 +43,9 @@ async def cmd_start(message: Message):
 
 @router.message(Command("help"))
 async def cmd_help(message: Message):
-    await message.answer(f"Hello, {message.from_user.full_name}!")
+    
+    await message.answer("🔽c правилами игры вы можите ознокомится тут🔽")
+    await message.answer_document(GAME_RULES)
 
 
 @router.message(Command("id"))
@@ -138,7 +143,7 @@ async def joining_to_game(message: Message, state: FSMContext, bot: Bot):
 
             else:
                 await message.answer(
-                    f"игра уже началась, вы не можите присоединиться к ней"
+                    f"игра уже началась, вы не можете присоединиться к ней"
                 )
     else:
         await message.answer(f"игры с таким названием не существует")
