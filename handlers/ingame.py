@@ -18,11 +18,6 @@ router = Router()
 
 # <--message handlers-->
 
-@router.message(Game.waiting)
-async def waiting_exeption(message: Message):
-    await message.answer("ожидайте присоединения к игре других игроков и начачала игры")
-
-
 @router.message(Game.game, F.text == "⛔️выйти из игры")
 async def leave_game(message: Message, state: FSMContext):
     await state.clear()
