@@ -41,6 +41,8 @@ class Card:
             "condition_card": condition_card,
         }
 
+        self.kiсked = False
+
         self.online = True
 
     def __str__(self):
