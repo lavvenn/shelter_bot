@@ -3,9 +3,9 @@ from aiogram.types import Message, CallbackQuery, InputMediaPhoto
 from aiogram.fsm.context import FSMContext
 
 from game_states import Game
-from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_kb
+from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_kb, kick_kb
 from keyboards.reply import main_kb
-from keyboards.inline import back_kb, join_game_kb
+from keyboards.inline import back_kb, join_game_kb, master_kb
 
 from shelter_game.shelter_utils import print_card, print_my_card, print_shelter, print_catastrophe
 
@@ -54,13 +54,18 @@ async def start_game(query: CallbackQuery, state: FSMContext):
     game = all_games[data["game_name"]]
 
     # photo = id all_cards.jpg
-    photo = ALL_PLAYERS_IMG
-    await query.message.answer(
-        text=f"вы можeте выйти из игры нажав кнопку ⛔️выйти из игры",
-        reply_markup=get_standart_kb("⛔️выйти из игры"),
-    )
+    if query.from_user.id == game.get_users_id()[0]:
+            await query.message.answer(
+            text=f"вы можeте выйти из игры нажав кнопку ⛔️выйти из игры, а так же управлять игрой 🕹панель ведущего",
+            reply_markup=get_standart_kb(["⛔️выйти из игры", "🕹панель ведущего"]),
+        )
+    else:
+        await query.message.answer(
+            text=f"вы можeте выйти из игры нажав кнопку ⛔️выйти из игры",
+            reply_markup=get_standart_kb("⛔️выйти из игры"),
+        )
     await query.message.answer_photo(
-        photo=photo,
+        photo=ALL_PLAYERS_IMG,
         reply_markup=print_kards(game.get_cards()),
     )
     await state.set_state(Game.game)
@@ -162,4 +167,57 @@ async def show_catastrophe(query: CallbackQuery, state: FSMContext):
             parse_mode="Markdown",
         ),
         reply_markup=back_kb,
-    )        
+    )     
+
+
+# <--master handlers-->
+
+@router.message(Game.game, F.text == "🕹панель ведущего")
+async def master_panel(message: Message, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    if message.from_user.id == game.get_users_id()[0]:
+        await message.answer(
+            "🕹панель ведущего", reply_markup=master_kb
+        ) 
+        await message.delete()
+    else:
+        await message.answer("только ведущий могут управлять игрой")
+
+@router.callback_query(Game.game, F.data == "kick_kb")
+async def kick_panel(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    await query.message.edit_text(
+        "выберите пользователя для кика", reply_markup=kick_kb(game.get_cards())
+    )
+
+
+@router.callback_query(Game.game, F.data == "back_to_master_panel")
+async def back_to_master_panel(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    if query.from_user.id == game.get_users_id()[0]:
+        await query.message.answer(
+            "🕹панель ведущего", reply_markup=master_kb
+        ) 
+        await query.message.delete()
+    else:
+        await query.message.answer("только ведущий могут управлять игрой")
+
+@router.callback_query(Game.game, F.data.startswith("kick_"))
+async def kick_user(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+
+    game.kick_user(int(query.data[5:]) - 1)
+
+    await query.message.edit_text(
+        "выберите пользователя для кика", reply_markup=kick_kb(game.get_cards())
+    )
+
+    

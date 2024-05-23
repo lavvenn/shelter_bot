@@ -46,8 +46,8 @@ def get_random_card(card_numder: int, user_id: int, user_name: str) -> Card:
         ],
         knowledge=[random.choice(characteristics["knowledge"]), False],
         baggage=[random.choice(characteristics["baggages"]), False],
-        action_card=["чтото", False],
-        condition_card=["чтото", False],
+        action_card=["🛠в разработке🛠", False],
+        condition_card=["🛠в разработке🛠", False],
     )
 
 
@@ -91,7 +91,7 @@ def show_characteristic(characteristic: list) -> str:
     if characteristic[1] == True:
         return characteristic[0]
     else:
-        return "######"
+        return "#️⃣#️⃣#️⃣#️⃣#️⃣#️⃣"
 
 
 def show_my_characteristic(characteristic: list) -> str:

@@ -108,6 +108,9 @@ class Game:
     def add_card(self, card: Card):
         self.cards.append(card)
 
+    def kick_user(self, card_id: int):
+        self.cards[card_id].kiсked = True
+
     def get_users_id(self) -> list[int]:
         return [card.user_id for card in self.cards]
 
