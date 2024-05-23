@@ -58,7 +58,7 @@ def kick_kb(cards: list) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     [builder.row(InlineKeyboardButton(text=f"🚪{card.number}.{card.name}", callback_data=f"kick_{card.number}")) for card in cards if not card.kiсked]
-    [builder.row(InlineKeyboardButton(text=f"⚡️{card.number}.{card.name}", callback_data=f"kick_{card.number}")) for card in cards if card.kiсked]
+    [builder.row(InlineKeyboardButton(text=f"⚡️{card.number}.{card.name}", callback_data=f"reborn_{card.number}")) for card in cards if card.kiсked]
 
     builder.row(InlineKeyboardButton(text="⬅️назад", callback_data="back_to_master_panel"))
 

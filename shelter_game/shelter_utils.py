@@ -46,8 +46,8 @@ def get_random_card(card_numder: int, user_id: int, user_name: str) -> Card:
         ],
         knowledge=[random.choice(characteristics["knowledge"]), False],
         baggage=[random.choice(characteristics["baggages"]), False],
-        action_card=["🛠в разработке🛠", False],
-        condition_card=["🛠в разработке🛠", False],
+        action_card=["🛠в разработке🛠", True],
+        condition_card=["🛠в разработке🛠", True],
     )
 
 

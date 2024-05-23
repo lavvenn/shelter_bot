@@ -111,6 +111,9 @@ class Game:
     def kick_user(self, card_id: int):
         self.cards[card_id].kiсked = True
 
+    def reborn_user(self, card_id: int):
+        self.cards[card_id].kiсked = False
+
     def get_users_id(self) -> list[int]:
         return [card.user_id for card in self.cards]
 

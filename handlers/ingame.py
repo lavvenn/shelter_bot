@@ -154,6 +154,7 @@ async def show_shelter(query: CallbackQuery, state: FSMContext):
         reply_markup=back_kb,
     )
 
+
 @router.callback_query(Game.game, F.data == "show_catastrophe")
 async def show_catastrophe(query: CallbackQuery, state: FSMContext):
     global all_games
@@ -185,6 +186,7 @@ async def master_panel(message: Message, state: FSMContext):
     else:
         await message.answer("только ведущий могут управлять игрой")
 
+
 @router.callback_query(Game.game, F.data == "kick_kb")
 async def kick_panel(query: CallbackQuery, state: FSMContext):
     global all_games
@@ -208,6 +210,7 @@ async def back_to_master_panel(query: CallbackQuery, state: FSMContext):
     else:
         await query.message.answer("только ведущий могут управлять игрой")
 
+
 @router.callback_query(Game.game, F.data.startswith("kick_"))
 async def kick_user(query: CallbackQuery, state: FSMContext):
     global all_games
@@ -219,5 +222,20 @@ async def kick_user(query: CallbackQuery, state: FSMContext):
     await query.message.edit_text(
         "выберите пользователя для кика", reply_markup=kick_kb(game.get_cards())
     )
+    await query.answer(f"пользователь {query.data[5:]} кикнут")
+
+
+@router.callback_query(Game.game, F.data.startswith("reborn_"))
+async def kick_user(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+
+    game.reborn_user(int(query.data[7:]) - 1)
+
+    await query.message.edit_text(
+        "выберите пользователя для кика или возвращения", reply_markup=kick_kb(game.get_cards())
+    )
+    await query.answer(f"пользователь {query.data[7:]} возвращен")
 
     
