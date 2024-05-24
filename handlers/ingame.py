@@ -238,4 +238,16 @@ async def kick_user(query: CallbackQuery, state: FSMContext):
     )
     await query.answer(f"пользователь {query.data[7:]} возвращен")
 
+
+@router.callback_query(Game.game, F.data == "end_game")
+async def end_game(query: CallbackQuery, state: FSMContext):
+    global all_games
+    data = await state.get_data()
+    game = all_games[data["game_name"]]
+    final = game.get_final()
+
+    await query.message.answer(
+        final
+    )
+    await query.message.delete()
     

@@ -145,3 +145,14 @@ class Game:
                 return card
         else:
             return "нет карты у пользователя с таким id"
+        
+    def get_survivors(self) -> list[Card]:
+        return [survivor for survivor in self.cards if not survivor.kiсked]
+        
+    def get_final(self):
+        final = {
+            "catastrophe": self.get_catastrophe(),
+            "shelter": self.get_shelter(),
+            "cards": {card:card.characteristics for card in self.get_survivors()},
+        }
+        return str(final)
