@@ -67,7 +67,7 @@ class Card:
         return [key for key, value in self.characteristics.items() if value[1] == False]
 
     def get_all_characteristics(self) -> dict:
-        return {key: value for key, value in self.characteristics.items()}
+        return {key: value[0] for key, value in self.characteristics.items()}
 
 
 class Shelter:
@@ -153,6 +153,6 @@ class Game:
         final = {
             "catastrophe": self.get_catastrophe(),
             "shelter": self.get_shelter(),
-            "cards": {card:card.characteristics for card in self.get_survivors()},
+            "cards": {card:card.get_all_characteristics() for card in self.get_survivors()},
         }
         return str(final)
