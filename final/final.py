@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
 
-
-
 class Final(ABC):
     @classmethod
     @abstractmethod
