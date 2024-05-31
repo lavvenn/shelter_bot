@@ -1,4 +1,4 @@
-from final import Final
+from final.final import Final
 
 from g4f.client import Client
 from g4f.Provider import Liaobots

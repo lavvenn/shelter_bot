@@ -8,6 +8,7 @@ from keyboards.reply import main_kb
 from keyboards.inline import back_kb, join_game_kb, master_kb
 
 from shelter_game.shelter_utils import print_card, print_my_card, print_shelter, print_catastrophe
+from final.g4f_final import G4FFinal
 
 from handlers.start import all_games, waiting_rooms
 
@@ -244,7 +245,7 @@ async def end_game(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    final = game.get_final()
+    final = G4FFinal().get_final(game_data=game.get_final())
 
     await query.message.answer(
         final
