@@ -31,6 +31,7 @@ class G4FFinal(Final):
         )
 
         final = response.choices[0].message.content
+        
         return self.translator.translate(final, dest="ru").text
     
     def get_character_final(self,game_data:str,character_id:int, contex:str):
@@ -38,4 +39,5 @@ class G4FFinal(Final):
     
 
 if __name__ == "__main__":
+    test_game_data = ""
     print(G4FFinal().get_final(game_data=test_game_data))
