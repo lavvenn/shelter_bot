@@ -1,17 +1,11 @@
-from aiogram import Router, F, Bot
+from aiogram import Router
 from aiogram.filters.command import Command, CommandStart
-from aiogram.types import Message, CallbackQuery
-from aiogram.types.input_file import FSInputFile
-from aiogram.fsm.context import FSMContext
-
-from game_states import Game
-
+from aiogram.types import Message
 
 from config import GAME_RULES
 
-from keyboards import builders as b
 from keyboards import reply as r
-from keyboards import inline as i
+
 
 all_games = {}
 
