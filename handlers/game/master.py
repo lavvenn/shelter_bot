@@ -91,3 +91,7 @@ async def end_game(query: CallbackQuery, state: FSMContext):
         final
     )
     await query.message.delete()
+
+@router.callback_query(Game.game, F.data == "close_master_panel")
+async def close_master_panel(query: CallbackQuery, state: FSMContext):
+    await query.message.delete()
