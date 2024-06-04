@@ -74,7 +74,7 @@ async def start_game(query: CallbackQuery, state: FSMContext):
     await query.message.delete()
 
 
-@router.callback_query(Game.game, F.data.startswith("open_card_"))
+@router.callback_query(Game.game, F.data.startswith("show_card_"))
 async def open_card(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
