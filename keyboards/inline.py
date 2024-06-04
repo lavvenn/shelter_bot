@@ -14,7 +14,8 @@ join_game_kb = InlineKeyboardMarkup(inline_keyboard=[
 
 master_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text = "📊выгнать игрока", callback_data="kick_kb")],
-    [InlineKeyboardButton(text = "👾завершить игру", callback_data="end_game")]
+    [InlineKeyboardButton(text = "👾завершить игру", callback_data="end_game")],
+    [InlineKeyboardButton(text="📛закрыть панель", callback_data="close_master_panel")]
 ])
 
 # update_users_list_kb = InlineKeyboardMarkup(inline_keyboard=[
