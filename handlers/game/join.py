@@ -8,11 +8,12 @@ from keyboards import builders as b
 from keyboards import reply as r
 from keyboards import inline as i
 
-from shelter_game.shelter_utils import get_random_card
+from shelter.shelter_utils import get_random_card
 
 from handlers.start import all_games, waiting_rooms
 
 router = Router()
+
 
 @router.message(F.text == "🎮присоединится к игре")
 async def join_game(message: Message, state: FSMContext):

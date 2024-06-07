@@ -1,12 +1,11 @@
 import random
-import string
 import json
 
 
 
-from shelter_game.shelter import *
+from shelter.game.shelter import *
 
-with open("shelter_game/characteristics.json") as c, open("shelter_game/shelters.json") as s:
+with open("shelter/characteristics.json") as c, open("shelter/shelters.json") as s:
     characteristics = json.load(c)
     shelters = json.load(s)
 

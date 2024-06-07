@@ -4,7 +4,7 @@ from aiogram.types import Message
 
 from game_states import Game
 
-from shelter_game.shelter_utils import get_random_game, get_random_card
+from shelter.shelter_utils import get_random_game, get_random_card
 
 from config import GAME_RULES
 
