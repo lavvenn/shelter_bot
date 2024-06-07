@@ -55,11 +55,19 @@ python run.py
 ### Структура проекта
 
 ```bash
-
 shelter_bot/
+├── final/                 # Финальные модули
+│   ├── __init__.py
+│   ├── final.py
+│   ├── g4f_final.py
+│   └── OAI_final.py
 ├── handlers/              # Модули обработчиков
+│   ├── game/
+│   │   ├── create.py
+│   │   ├── join.py
+│   │   ├── main.py
+│   │   ├── master.py
 │   ├── admin.py
-│   ├── ingame.py
 │   └── start.py
 ├── img/                   # Изображения для бота
 │   ├── all_cards.jpg
@@ -67,21 +75,23 @@ shelter_bot/
 │   ├── player_card.jpg
 │   └── shelter.jpg
 ├── keyboards/             # Клавиатуры для взаимодействия с пользователем
+│   ├── __init__.py
 │   ├── admin_kb.py
 │   ├── builders.py
 │   ├── inline.py
 │   └── reply.py
-├── shelter_game/          # Логика игры
-│   ├── characteristics.json
-│   ├── shelter_utils.py
-│   ├── shelter.py
-│   ├── shelters.json
-│   └── test.py
+├── shelter/               # Логика игры
+│   ├── game/
+│   │   ├── characteristics.json
+│   │   ├── shelter_utils.py
+│   │   ├── shelter.py
+│   │   ├── shelters.json
+│   │   └── test.py
 ├── .gitignore
-├── Бункер_Правила.pdf      # Правила игры "Бункер"
-├── config_example.py       # Пример конфигурационного файла
-├── config.py               # Конфигурационный файл (создается пользователем)
-├── game_states.py          # Состояния игры
+├── Бункер_Правила.pdf     # Правила игры "Бункер"
+├── config_example.py      # Пример конфигурационного файла
+├── config.py              # Конфигурационный файл (создается пользователем)
+├── game_states.py         # Состояния игры
 ├── README.md
-└── run.py                  # Главный файл для запуска бота
+└── run.py                 # Главный файл для запуска бота
 ```
