@@ -88,7 +88,7 @@ async def end_game(query: CallbackQuery, state: FSMContext):
     final = G4FFinal().get_final(game_data=game.get_final())
 
     await query.message.answer(
-        final
+        "в разработке"
     )
     await query.message.delete()
 

@@ -71,7 +71,7 @@ shelter_bot/
 │   ├── builders.py
 │   ├── inline.py
 │   └── reply.py
-├── shelter_game/          # Логика игры
+├── shelter/          # Логика игры
 │   ├── characteristics.json
 │   ├── shelter_utils.py
 │   ├── shelter.py

@@ -63,3 +63,9 @@ def kick_kb(cards: list) -> InlineKeyboardMarkup:
     builder.row(InlineKeyboardButton(text="⬅️назад", callback_data="back_to_master_panel"))
 
     return builder.as_markup(resize_keyboard=True)
+
+def gpt_choice_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(InlineKeyboardButton(text="openai_api", callback_data="gpt_openai_api"))
+    builder.row(InlineKeyboardButton(text="g4f", callback_data="gpt_g4f"))
+    return builder.as_markup(resize_keyboard=True)

@@ -8,7 +8,7 @@ from handlers.start import all_games, waiting_rooms
 
 from keyboards import admin_kb as kb
 
-from shelter_game.shelter_utils import get_random_game, get_random_card
+from shelter.shelter_utils import get_random_game, get_random_card
 
 
 router = Router()

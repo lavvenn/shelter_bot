@@ -6,7 +6,7 @@ from game_states import Game
 from keyboards.builders import print_kards, get_standart_kb, open_caracteristic_kb
 from keyboards.reply import main_kb
 from keyboards.inline import back_kb, join_game_kb
-from shelter_game.shelter_utils import print_card, print_my_card, print_shelter, print_catastrophe
+from shelter.shelter_utils import print_card, print_my_card, print_shelter, print_catastrophe
 
 from handlers.start import all_games, waiting_rooms
 
@@ -16,6 +16,7 @@ from config import ALL_PLAYERS_IMG, PLAYER_CARD_IMG, SHELTER_IMG, CATASTROPHE_IM
 router = Router()
 
 # <--message handlers-->
+
 
 @router.message(Game.game, F.text == "⛔️выйти из игры")
 async def leave_game(message: Message, state: FSMContext):
