@@ -93,11 +93,11 @@ def show_characteristic(characteristic: list) -> str:
         return "#️⃣#️⃣#️⃣#️⃣#️⃣#️⃣"
 
 
-def show_my_characteristic(characteristic: list) -> str:
+def show_open_or_not(characteristic: list) -> str:
     if characteristic[1] == True:
-        return f"{characteristic[0]}🟢"
+        return "🟢"
     else:
-        return f"{characteristic[0]}🔴"
+        return "🔴"
 
 
 def print_card(card: Card) -> str:
@@ -141,27 +141,27 @@ def print_my_card(card: Card) -> str:
     text = f"""
 **Карточка игрока номер:**{card.number}
 
-**Биологические характеристики:** __{show_my_characteristic(card.characteristics["biological_characteristics"])}__
+{show_open_or_not(card.characteristics["biological_characteristics"])}**Биологические характеристики:** {card.characteristics["biological_characteristics"][0]}
 
-**Профессия:** __{show_my_characteristic(card.characteristics["profession"])}__
+{show_open_or_not(card.characteristics["profession"])}**Профессия:** {card.characteristics["profession"][0]}
 
-**Здоровье:** __{show_my_characteristic(card.characteristics["health"])}__
+{show_open_or_not(card.characteristics["health"])}**Здоровье:** {card.characteristics["health"][0]}
 
-**Хобби:** __{show_my_characteristic(card.characteristics["hobby"])}__
+{show_open_or_not(card.characteristics["hobby"])}**Хобби:** {card.characteristics["hobby"][0]}
 
-**Фобия:** __{show_my_characteristic(card.characteristics["phobia"])}__
+{show_open_or_not(card.characteristics["phobia"])}**Фобия:** {card.characteristics["phobia"][0]}
 
-**Характер:** __{show_my_characteristic(card.characteristics["character"])}__
+{show_open_or_not(card.characteristics["character"])}**Характер:** {card.characteristics["character"][0]}
 
-**Дополнительная информация:** __{show_my_characteristic(card.characteristics["additional_information"])}__
+{show_open_or_not(card.characteristics["additional_information"])}**Дополнительная информация:** {card.characteristics["additional_information"][0]}
 
-**Знания:** __{show_my_characteristic(card.characteristics["knowledge"])}__
+{show_open_or_not(card.characteristics["knowledge"])}**Знания:** {card.characteristics["knowledge"][0]}
 
-**Багаж:** __{show_my_characteristic(card.characteristics["baggage"])}__
+{show_open_or_not(card.characteristics["baggage"])}**Багаж:** {card.characteristics["baggage"][0]}
 
-**Деятельность:** __{show_my_characteristic(card.characteristics["action_card"])}__
+{show_open_or_not(card.characteristics["action_card"])}**Деятельность:** {card.characteristics["action_card"][0]}
 
-**Состояние:** __{show_my_characteristic(card.characteristics["condition_card"])}__
+{show_open_or_not(card.characteristics["condition_card"])}**Состояние:** {card.characteristics["condition_card"][0]}
 """
 
     return text
