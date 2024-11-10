@@ -1,9 +1,9 @@
-from final.final import Final
+from final import Final
 
 from g4f.client import Client
 from g4f.Provider import Liaobots
 
-from googletrans import Translator
+from translate import Translator
 
 
 preprompt = """
@@ -15,10 +15,11 @@ from the received data. it is necessary to take into account the number of playe
 
 class G4FFinal(Final):
     client = Client(provider=Liaobots)
-    translator = Translator()
+    translator_1 = Translator(from_lang="ru", to_lang="en")
+    translator_2 = Translator(from_lang="en", to_lang="ru")
 
     def get_final(self,game_data:str):
-        game_data_en = self.translator.translate(game_data, dest="en").text
+        game_data_en = self.translator_1.translate(game_data)
         response = self.client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -32,12 +33,12 @@ class G4FFinal(Final):
 
         final = response.choices[0].message.content
         
-        return self.translator.translate(final, dest="ru").text
+        return self.translator_2.translate(final)
     
     def get_character_final(self,game_data:str,character_id:int, contex:str):
         pass
     
 
 if __name__ == "__main__":
-    test_game_data = ""
+    test_game_data = "{'catastrophe': {'name': 'Глобальная эпидемия плесени2', 'description': 'Интенсивный рост плесени по всему миру, приводящий к разрушению имущества и риску для здоровья.'}, 'shelter': {'name': 'Мрачный утес', 'description': 'Расположен на берегу, отличается своими тёмными скалами и бурными волнами.', 'rooms': ['Комната отдыха', 'Кухня', 'Санузел', 'Спальня', 'Комната наблюдения'], 'loot': ['Канистры для воды', 'Спальные мешки', 'Средства гигиены', 'Канистры для топлива'], 'size': '319 m²', 'time': '5 лет'}, 'cards': {card number: 1: {'profession': ['Архитектор', False], 'biological_characteristics': ['женщина 26 лет, асексуал', False], 'health': ['Легкая анемия', False], 'hobby': ['Катание на роликах', False], 'phobia': ['Демофобия (боязнь толпы)', False], 'character': ['Лояльный', False], 'additional_information': ['Способность находить еду', False], 'knowledge': ['Знание экологии', False], 'baggage': ['Рюкзак', False], 'action_card': ['🛠в разработке🛠', True], 'condition_card': ['🛠в разработке🛠', True]}}}"
     print(G4FFinal().get_final(game_data=test_game_data))

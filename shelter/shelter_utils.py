@@ -109,7 +109,7 @@ def print_card(card: Card) -> str:
     ]
 
     text = f"""
-**Карточка игрока номер:**{card.number}
+**🃏Карточка игрока номер:**{card.number}
 
 **Биологические характеристики:** {show_characteristic(card.characteristics["biological_characteristics"])}
 
@@ -139,7 +139,7 @@ def print_card(card: Card) -> str:
 def print_my_card(card: Card) -> str:
 
     text = f"""
-**Карточка игрока номер:**{card.number}
+**🃏Карточка игрока номер:**{card.number}
 
 {show_open_or_not(card.characteristics["biological_characteristics"])}**Биологические характеристики:** {card.characteristics["biological_characteristics"][0]}
 

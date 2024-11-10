@@ -34,7 +34,7 @@ async def kick_panel(query: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     game = all_games[data["game_name"]]
     await query.message.edit_text(
-        "выберите пользователя для кика", reply_markup=kick_kb(game.get_cards())
+        "выберите пользователя для кика или возвращения", reply_markup=kick_kb(game.get_cards())
     )
 
 
@@ -61,7 +61,7 @@ async def kick_user(query: CallbackQuery, state: FSMContext):
     game.kick_user(int(query.data[5:]) - 1)
 
     await query.message.edit_text(
-        "выберите пользователя для кика", reply_markup=kick_kb(game.get_cards())
+        "выберите пользователя для кика или возвращения", reply_markup=kick_kb(game.get_cards())
     )
     await query.answer(f"пользователь {query.data[5:]} кикнут")
 
