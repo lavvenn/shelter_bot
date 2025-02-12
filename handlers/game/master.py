@@ -6,7 +6,7 @@ from game_states import Game
 from keyboards.inline import master_kb
 from keyboards.builders import kick_kb
 
-from final.g4f_final import G4FFinal
+# from final.g4f_final import G4FFinal
 
 from handlers.start import all_games, waiting_rooms
 
