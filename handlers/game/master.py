@@ -6,7 +6,7 @@ from game_states import Game
 from keyboards.inline import master_kb
 from keyboards.builders import kick_kb
 
-# from final.g4f_final import G4FFinal
+from new_final.final import get_final
 
 from handlers.start import all_games, waiting_rooms
 
@@ -85,10 +85,10 @@ async def end_game(query: CallbackQuery, state: FSMContext):
     global all_games
     data = await state.get_data()
     game = all_games[data["game_name"]]
-    final = G4FFinal().get_final(game_data=game.get_final())
+    final = get_final(game_data=game.get_final())
 
     await query.message.answer(
-        "в разработке"
+        final
     )
     await query.message.delete()
 
