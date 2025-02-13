@@ -27,7 +27,7 @@ class Gemini_Flash_Lite_2_final(Final):
                 {   
                     "role": "user",
                     "content": preprompt
-                }
+                },
                 {
                     "role": "user",
                     "content": game_data
